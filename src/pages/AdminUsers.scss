@@ -1,0 +1,211 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.admin-users {
+  display: grid;
+  gap: 24px;
+
+  @include from-laptop {
+    grid-template-columns: 360px 1fr;
+    align-items: start;
+  }
+
+  &__form {
+    @include card;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    h3 {
+      margin: 0 0 4px;
+      font-size: 1.05rem;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: $font-heading;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: $color-text;
+    }
+
+    input,
+    select {
+      font-family: $font-body;
+      font-size: 0.95rem;
+      padding: 11px 14px;
+      border-radius: $radius-sm;
+      border: 1px solid $color-border;
+      background: $color-bg;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  &__password-row {
+    display: flex;
+    gap: 8px;
+
+    input {
+      flex: 1;
+    }
+
+    button {
+      padding: 0 14px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+  }
+
+  &__hint {
+    font-family: $font-body;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+  }
+
+  &__success {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #1e6b3c;
+    background: rgba(#1e6b3c, 0.08);
+    border: 1px solid rgba(#1e6b3c, 0.25);
+    border-radius: $radius-sm;
+    padding: 10px 12px;
+  }
+
+  &__list {
+    @include card;
+    padding: 24px;
+
+    h3 {
+      margin: 0 0 16px;
+      font-size: 1.05rem;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $color-border;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      strong {
+        font-size: 0.95rem;
+        color: $color-text;
+      }
+
+      span {
+        font-size: 0.82rem;
+        color: $color-text-muted;
+      }
+    }
+  }
+}
+
+.admin-users__list-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.admin-users__secondary-btn {
+  flex-shrink: 0;
+  display: inline-block;
+  font-family: $font-body;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $color-primary;
+  background: rgba($color-primary, 0.08);
+  border: 1px solid rgba($color-primary, 0.25);
+  border-radius: $radius-sm;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba($color-primary, 0.16);
+  }
+}
+
+.admin-users__row-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-users__password-edit {
+  margin-top: 10px;
+  padding: 12px;
+  background: $color-bg;
+  border-radius: $radius-sm;
+  border: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .admin-users__password-row input {
+    min-width: 0;
+  }
+}
+
+.admin-users__password-actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+.admin-users__delete-btn {
+  flex-shrink: 0;
+  font-family: $font-body;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #b3261e;
+  background: rgba(#b3261e, 0.08);
+  border: 1px solid rgba(#b3261e, 0.25);
+  border-radius: $radius-sm;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(#b3261e, 0.16);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}

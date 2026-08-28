@@ -1,0 +1,122 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.dashboard__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  h1 {
+    margin: 0;
+  }
+
+  .btn-outline {
+    font-size: 0.82rem;
+    padding: 8px 16px;
+  }
+}
+
+.dashboard__doctor-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.dashboard__doctor-header-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.dashboard__doctor-photo {
+  flex-shrink: 0;
+  // Antes era un avatar circular chico con "cover": recortaba la foto en un círculo diminuto y,
+  // como estas fotos traen el nombre del médico escrito abajo, se veía prácticamente ilegible.
+  // Se pasa a un rectángulo más grande con "contain" (misma idea que Specialties.scss) para que
+  // la foto entre completa y prolija; el degradé de fondo rellena si no calza exacto.
+  width: 64px;
+  height: 80px;
+  border-radius: $radius-sm;
+  object-fit: contain;
+  background: linear-gradient(135deg, $color-primary, $color-secondary-dark);
+  border: 2px solid $color-surface;
+  box-shadow: $shadow-sm;
+
+  @include from-tablet {
+    width: 84px;
+    height: 105px;
+  }
+}
+
+.dashboard__intro {
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+
+  @include from-tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include from-laptop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dashboard__card {
+  @include card;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &--wide {
+    max-width: 480px;
+  }
+
+  &--link {
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+    }
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin: 0;
+    color: $color-primary-dark;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.dashboard__badge {
+  align-self: flex-start;
+  margin-top: 8px;
+  font-family: $font-heading;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $color-secondary-dark;
+  background: rgba($color-secondary, 0.12);
+  padding: 5px 10px;
+  border-radius: 999px;
+
+  &--active {
+    color: #fff;
+    background: $color-primary;
+  }
+}

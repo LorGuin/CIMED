@@ -1,0 +1,27 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.instagram {
+  @include section-padding;
+  background: $color-surface;
+
+  &__inner {
+    @include container;
+  }
+
+  &__header {
+    max-width: 560px;
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 6px;
+    }
+  }
+
+  &__followers {
+    font-family: $font-heading;
+    font-weight: 700;
+    color: $color-secondary-dark;
+    margin-bottom: 16px;
+  }
+}

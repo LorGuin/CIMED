@@ -1,0 +1,113 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: $color-bg;
+  color: $color-text;
+  font-family: $font-body;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: $font-heading;
+  color: $color-primary-dark;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+p {
+  margin: 0 0 16px;
+  color: $color-text-muted;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-family: $font-heading;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-secondary-dark;
+  background: rgba($color-secondary, 0.12);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.btn-primary {
+  @include btn-base;
+  background: linear-gradient(135deg, $color-primary, $color-primary-light);
+  color: #fff;
+  box-shadow: $shadow-md;
+}
+
+.btn-whatsapp {
+  @include btn-base;
+  background: $color-whatsapp;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+}
+
+.btn-outline {
+  @include btn-base;
+  background: transparent;
+  color: $color-primary;
+  border: 2px solid $color-primary;
+}
+
+// El botón nativo de <input type="file"> ("Seleccionar archivo") no se puede controlar del todo
+// por CSS: el texto del nombre de archivo lo dibuja el navegador por dentro, y forzar display:flex
+// sobre el input rompe cómo el navegador le reparte el espacio a ese texto (quedaba recortado a
+// dos letras). Por eso el input real se esconde y se arma un botón propio con `.file-picker`
+// (una <label> que envuelve el <input type="file" style="display:none">) — mismo truco que ya se
+// usaba en el panel de administrador para la foto/QR de cada médico, ahora reutilizable en
+// cualquier lado. El nombre del archivo elegido se muestra con el estado de React de cada
+// formulario, no con el texto nativo del navegador, así queda 100% bajo control.
+.file-picker {
+  display: inline-flex;
+  // width: fit-content a propósito: así el botón queda compacto (del ancho de su propio texto)
+  // sin importar si el contenedor de afuera es un <label> en columna (que si no, lo estiraría a
+  // todo el ancho) o una fila junto a otros campos.
+  width: fit-content;
+  cursor: pointer;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  &__button {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #fff;
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    border-radius: $radius-sm;
+    padding: 10px 16px;
+    transition: filter 0.15s ease;
+  }
+
+  &:hover &__button {
+    filter: brightness(1.08);
+  }
+}

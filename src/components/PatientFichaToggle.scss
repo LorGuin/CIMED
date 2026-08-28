@@ -1,0 +1,35 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.patient-ficha-toggle {
+  flex-basis: 100%;
+  order: 3;
+  margin-top: 4px;
+
+  &__toggle {
+    width: 100%;
+    text-align: left;
+    background: rgba($color-primary, 0.06);
+    border: 1px solid rgba($color-primary, 0.18);
+    border-radius: $radius-sm;
+    padding: 8px 12px;
+    font-family: $font-heading;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: $color-primary-dark;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba($color-primary, 0.11);
+    }
+  }
+
+  &__panel {
+    margin-top: 8px;
+    padding: 14px 16px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-bg;
+  }
+}

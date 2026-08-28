@@ -1,0 +1,119 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.patient-background-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    h4 {
+      margin: 0;
+      font-family: $font-heading;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: $color-text-muted;
+    }
+  }
+
+  &__link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: $font-heading;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: $color-secondary-dark;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $color-text-muted;
+  }
+
+  &__display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.84rem;
+    color: $color-text;
+
+    p {
+      margin: 0;
+    }
+
+    strong {
+      color: $color-text-muted;
+      font-weight: 600;
+    }
+  }
+
+  &__subhead {
+    margin: 8px 0 0 !important;
+    font-family: $font-heading;
+    font-size: 0.7rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: $color-primary !important;
+
+    &:first-child {
+      margin-top: 0 !important;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.76rem;
+      color: $color-text-muted;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: $font-body;
+      font-size: 0.85rem;
+      padding: 8px 10px;
+      border-radius: $radius-sm;
+      border: 1px solid $color-border;
+      background: $color-surface;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+
+    @include from-tablet {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+}

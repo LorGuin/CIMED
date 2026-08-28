@@ -1,0 +1,168 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.specialties {
+  @include section-padding;
+  background: $color-surface;
+  padding-inline: 20px;
+
+  @include from-tablet {
+    padding-inline: 32px;
+  }
+
+  &__header {
+    margin-bottom: 32px;
+
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin: 0;
+    }
+  }
+
+  &__icons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+
+    @include from-tablet {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+  }
+
+  &__icon-item {
+    @include card;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 12px;
+    text-align: center;
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: $color-primary-dark;
+  }
+
+  &__icon {
+    font-size: 1.8rem;
+  }
+
+  &__empty {
+    color: $color-text-muted;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  &__doctors {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    @include from-tablet {
+      grid-template-columns: repeat(auto-fill, minmax(170px, 200px));
+      justify-content: start;
+      gap: 20px;
+    }
+  }
+}
+
+.doctor-chip {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+
+    .doctor-chip__media img {
+      transform: scale(1.06);
+    }
+  }
+
+  &__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: linear-gradient(135deg, $color-primary, $color-secondary-dark);
+
+    // object-fit: contain (no cover) a propósito: las fotos de los médicos ya vienen con su
+    // nombre y especialidad escritos abajo (son las piezas que se usan también en Instagram), así
+    // que recortarlas dejaría ese texto cortado o ilegible. Con "contain" se ve la foto completa,
+    // centrada, y el degradé de fondo de `.doctor-chip__media` rellena los costados si el
+    // recuadro no queda exactamente del mismo alto/ancho que la imagen.
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+  }
+
+  &__initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+    letter-spacing: 0.02em;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 16px 18px;
+
+    @include from-tablet {
+      padding: 16px 18px 20px;
+    }
+  }
+
+  &__label {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.68rem;
+    color: $color-secondary-dark;
+    background: rgba($color-secondary, 0.14);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  &__name {
+    font-family: $font-heading;
+    font-size: 0.95rem;
+    color: $color-text;
+    font-weight: 700;
+    line-height: 1.25;
+
+    @include from-tablet {
+      font-size: 1.02rem;
+    }
+  }
+
+  &__cta {
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: $color-whatsapp;
+  }
+}

@@ -1,0 +1,32 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.location {
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 20px;
+  }
+
+  &__map {
+    @include card;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 14px;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+
+  &__address {
+    font-size: 0.9rem;
+    color: $color-text-muted;
+
+    a {
+      color: $color-primary;
+      font-weight: 600;
+    }
+  }
+}

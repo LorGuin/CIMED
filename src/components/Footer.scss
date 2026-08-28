@@ -1,0 +1,54 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.footer {
+  background: $color-primary-dark;
+  color: rgba(#fff, 0.85);
+
+  &__inner {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-block: 28px;
+    text-align: center;
+
+    @include from-tablet {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  &__logo {
+    height: 44px;
+    width: auto;
+  }
+
+  &__copy {
+    font-size: 0.85rem;
+    color: rgba(#fff, 0.7);
+  }
+
+  &__social {
+    display: flex;
+    gap: 12px;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(#fff, 0.12);
+      color: #fff;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background: rgba(#fff, 0.22);
+      }
+    }
+  }
+}

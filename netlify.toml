@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# La app usa React Router del lado del cliente (todas las rutas viven en un solo index.html).
+# Sin esto, entrar directo a una URL como /admin o /turno, o recargar la página estando ahí,
+# devuelve un 404 de Netlify en vez de dejar que React Router la resuelva.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

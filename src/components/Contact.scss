@@ -1,0 +1,75 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.contact {
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 20px;
+  }
+
+  &__form {
+    @include card;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+
+    input,
+    textarea {
+      width: 100%;
+      font-family: $font-body;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      border-radius: $radius-sm;
+      border: 1px solid $color-border;
+      background: $color-bg;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  &__submit {
+    align-self: flex-start;
+    padding: 12px 28px;
+    font-size: 0.9rem;
+  }
+
+  &__info {
+    @include card;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    strong {
+      font-family: $font-heading;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: $color-secondary-dark;
+    }
+
+    span,
+    a {
+      color: $color-text;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    a:hover {
+      color: $color-primary;
+    }
+  }
+}

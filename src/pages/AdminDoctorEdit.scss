@@ -1,0 +1,126 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.admin-doctor-edit__back {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-family: $font-heading;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.admin-doctor-edit {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: $font-heading;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $color-text;
+  }
+
+  input,
+  select,
+  textarea {
+    font-family: $font-body;
+    font-size: 0.95rem;
+    padding: 11px 14px;
+    border-radius: $radius-sm;
+    border: 1px solid $color-border;
+    background: $color-bg;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
+  }
+
+  &__section {
+    @include card;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: $color-primary-dark;
+    }
+  }
+
+  &__hint {
+    margin: -4px 0 0;
+    font-size: 0.82rem;
+    color: $color-text-muted;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px 16px;
+
+    @include from-tablet {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__full {
+    @include from-tablet {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__media-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__preview {
+    width: 72px;
+    height: 72px;
+    border-radius: $radius-sm;
+    object-fit: cover;
+    border: 1px solid $color-border;
+
+    &--qr {
+      object-fit: contain;
+      background: #fff;
+      padding: 4px;
+    }
+  }
+
+  &__file-label {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 8px;
+    font-family: $font-body !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $color-primary;
+    background: rgba($color-primary, 0.08);
+    border: 1px solid rgba($color-primary, 0.25);
+    border-radius: $radius-sm;
+    padding: 10px 14px;
+    cursor: pointer;
+
+    input[type='file'] {
+      display: none;
+    }
+  }
+
+}

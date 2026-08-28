@@ -1,0 +1,225 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.patient-quick-record {
+  flex-basis: 100%;
+  order: 3;
+  margin-top: 4px;
+
+  &__toggle {
+    width: 100%;
+    text-align: left;
+    background: rgba($color-primary, 0.06);
+    border: 1px solid rgba($color-primary, 0.18);
+    border-radius: $radius-sm;
+    padding: 8px 12px;
+    font-family: $font-heading;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: $color-primary-dark;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba($color-primary, 0.11);
+    }
+  }
+
+  &__panel {
+    margin-top: 8px;
+    padding: 14px 16px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-bg;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__patient-name {
+    margin: 0;
+    font-family: $font-heading;
+    font-size: 1rem;
+    color: $color-primary-dark;
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $color-text-muted;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid $color-border;
+
+    &:first-of-type {
+      padding-top: 0;
+      border-top: none;
+    }
+
+    h4 {
+      margin: 0;
+      font-family: $font-heading;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: $color-text-muted;
+    }
+  }
+
+  &__record {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 10px;
+    background: $color-surface;
+    border-radius: $radius-sm;
+    font-size: 0.84rem;
+
+    p {
+      margin: 0;
+      color: $color-text;
+    }
+
+    strong {
+      color: $color-text-muted;
+      font-weight: 600;
+    }
+
+    & + & {
+      margin-top: 6px;
+    }
+
+    &--last {
+      border-left: 3px solid $color-primary;
+    }
+  }
+
+  &__record-date {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: $color-primary-dark;
+  }
+
+  &__vitals {
+    font-size: 0.78rem !important;
+    color: $color-text-muted !important;
+  }
+
+  &__visit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: $color-text;
+  }
+
+  &__visit-status {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 999px;
+
+    &--atendido {
+      color: $color-secondary-dark;
+      background: rgba($color-secondary-dark, 0.12);
+    }
+
+    &--cancelado {
+      color: #c0442f;
+      background: rgba(#c0442f, 0.12);
+    }
+  }
+
+  &__consult-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.78rem;
+      color: $color-text-muted;
+    }
+
+    input,
+    textarea {
+      font-family: $font-body;
+      font-size: 0.85rem;
+      padding: 8px 10px;
+      border-radius: $radius-sm;
+      border: 1px solid $color-border;
+      background: $color-surface;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  // "minmax(0, 1fr)" en vez de "1fr" a secas: si no, cada columna del grid toma como ancho
+  // mínimo el ancho intrínseco del <input> (bastante más que el celular disponible), y termina
+  // empujando "Altura"/"Temp." fuera de la pantalla en vez de acomodarse a 2 por fila.
+  &__vitals-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+
+    @include from-tablet {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    label {
+      min-width: 0;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  &__study-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+
+    input[type='text'] {
+      flex: 1 1 200px;
+      font-family: $font-body;
+      font-size: 0.85rem;
+      padding: 8px 10px;
+      border-radius: $radius-sm;
+      border: 1px solid $color-border;
+      background: $color-surface;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+      }
+    }
+
+    input[type='file'] {
+      font-size: 0.78rem;
+      max-width: 200px;
+    }
+
+    button {
+      font-size: 0.8rem;
+      padding: 8px 14px;
+    }
+  }
+}

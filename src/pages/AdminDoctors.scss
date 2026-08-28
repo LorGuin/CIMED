@@ -1,0 +1,30 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+// El formulario de "Nuevo médico" tiene bastantes más campos que el de accesos, así que en
+// pantallas anchas los acomodamos de a 2 por fila (en vez de uno abajo del otro) para que no se
+// despliegue tanto hacia abajo. En celular sigue siendo una sola columna, más fácil de completar
+// con el dedo.
+.admin-doctors {
+  @include from-laptop {
+    grid-template-columns: minmax(0, 620px) 1fr;
+  }
+
+  .admin-users__form {
+    @include from-tablet {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+
+      h3 {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  .admin-users__field--full {
+    @include from-tablet {
+      grid-column: 1 / -1;
+    }
+  }
+}

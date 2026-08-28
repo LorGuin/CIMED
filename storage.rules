@@ -1,0 +1,26 @@
+// NOTA: este archivo quedó SIN USO. Las fotos de médicos ahora se guardan comprimidas directo en
+// Firestore (ver src/firebase/doctors.ts) para no depender de Firebase Storage, que pasó a exigir
+// el plan de pago Blaze para activarse. No hace falta publicar estas reglas en ningún lado.
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Fotos de los medicos: se muestran en la landing publica (lectura libre). La escritura
+    // (subir/reemplazar una foto) solo se hace desde la pantalla de "Medicos" del Panel de
+    // Administrador, y requiere estar logueado. Nota: por simplicidad esto permite subir a
+    // CUALQUIER usuario logueado (admin, medico o secretaria) — hoy solo el admin tiene esa
+    // pantalla en la app, pero si mas adelante se quiere reforzar a nivel de reglas (no solo a
+    // nivel de que boton se muestra), se puede validar el rol contra Firestore desde aca.
+    match /doctors/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Todo lo demas, cerrado por defecto.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

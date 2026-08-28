@@ -1,0 +1,85 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.doctor-card {
+  @include card;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+  }
+
+  &__photo-wrap {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: $color-primary-dark;
+  }
+
+  &__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+  }
+
+  &__specialty {
+    color: $color-secondary-dark;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  &__services {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+
+    li {
+      font-size: 0.85rem;
+      color: $color-text-muted;
+      padding-left: 18px;
+      position: relative;
+
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: $color-secondary-dark;
+        font-weight: 700;
+      }
+    }
+  }
+
+  &__note {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  &__cta {
+    margin-top: auto;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}

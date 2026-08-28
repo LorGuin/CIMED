@@ -1,0 +1,135 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/staff/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Mapea "usuario" (texto simple) -> email interno para poder loguear sin usar un email real.
+    // Lectura publica (la necesita la pantalla de login ANTES de autenticar). Solo el admin puede
+    // escribir (lo hace la app, desde el Panel de Administrador, al crear un usuario nuevo).
+    match /usernameIndex/{username} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Ficha de cada persona del staff (admin / medico / secretaria).
+    // Cada uno puede leer solo la propia; el admin puede leer y escribir todas.
+    match /staff/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Fichas de los medicos (nombre, especialidad, matricula, foto, QR, alias, horarios, etc).
+    // Se muestran en la landing publica, asi que lectura publica. El admin puede crear, editar y
+    // borrar cualquiera desde el Panel de Administrador; ademas, cada medico puede editar SU
+    // PROPIA ficha desde "Mis datos profesionales" (todo excepto la foto, que solo cambia el
+    // admin por convencion de la app, no de las reglas).
+    match /doctors/{docId} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() ||
+        (isSignedIn() &&
+          get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.doctorId == docId);
+    }
+
+    // Turnos pedidos desde la web publica. Cualquiera puede crear uno (el paciente no tiene
+    // cuenta ni inicia sesion), pero leerlos y modificarlos (confirmar/cancelar) solo el staff
+    // logueado (admin, medico o secretaria) — son datos personales del paciente. El borrado
+    // tambien queda para el staff logueado: lo usa `archivePastTurnos()` para limpiar un turno
+    // recien archivado en `patientVisits` (no se borra nada a mano, solo la app lo hace).
+    //
+    // Validacion del `create`: como no requiere login, es el unico punto de la app donde cualquiera
+    // en internet puede escribir en la base — sin esto, alguien podria mandar campos inventados,
+    // textos gigantes (costo de almacenamiento) o marcar turnos como ya "confirmado"/"sobreturno"
+    // sin pasar por el staff. Se valida que el documento tenga exactamente los campos esperados,
+    // con el tipo y el largo correcto, y que "confirmado" o "sobreturno" solo los pueda mandar el
+    // staff logueado (la carga a mano desde Secretaria/Medico, ver `createTurnoByStaff()`); un
+    // pedido publico desde /turno siempre queda "pendiente" y no es sobreturno.
+    function isValidTurno() {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'doctorId', 'doctorName', 'patientName', 'patientPhone', 'patientDni',
+          'motivo', 'date', 'time', 'status', 'seniaInformada', 'isOverbooking', 'createdAt'
+        ]) &&
+        d.doctorId is string && d.doctorId.size() > 0 && d.doctorId.size() <= 100 &&
+        d.doctorName is string && d.doctorName.size() <= 150 &&
+        d.patientName is string && d.patientName.size() > 0 && d.patientName.size() <= 150 &&
+        d.patientPhone is string && d.patientPhone.size() <= 40 &&
+        d.patientDni is string && d.patientDni.size() <= 40 &&
+        d.motivo is string && d.motivo.size() <= 500 &&
+        d.date is string && d.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') &&
+        d.time is string && d.time.matches('^[0-9]{2}:[0-9]{2}$') &&
+        d.status in ['pendiente', 'confirmado'] &&
+        (d.status == 'pendiente' || isSignedIn()) &&
+        d.seniaInformada is bool &&
+        d.isOverbooking is bool &&
+        (d.isOverbooking == false || isSignedIn()) &&
+        d.createdAt is number;
+    }
+
+    match /turnos/{turnoId} {
+      allow create: if isValidTurno();
+      allow read, update, delete: if isSignedIn();
+    }
+
+    // Historial clinico de pacientes ("ficha del paciente"), armado automaticamente a partir de
+    // los turnos que ya pasaron de fecha (ver `archivePastTurnos()` en el codigo). Los pacientes
+    // son de CIMED, no de un medico en particular, asi que cualquiera del staff logueado (admin,
+    // medico o secretaria) puede crear y leer TODO el historial, no solo el propio; no se edita ni
+    // se borra una vez creado (registro permanente).
+    match /patientVisits/{visitId} {
+      allow create, read: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Consultas cargadas por el medico por paciente (historia clinica general, ver
+    // `clinicalNotes.ts`). Igual que `patientVisits`: cualquiera del staff logueado puede crear y
+    // leer TODO el historial (compartido entre medicos), y no se edita ni se borra una vez cargada
+    // (para corregir algo se carga una consulta nueva).
+    match /clinicalNotes/{noteId} {
+      allow create, read: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Ficha de antecedentes del paciente (datos filiatorios, cobertura, antecedentes, alergias,
+    // medicacion habitual, ver `patientBackground.ts`) — a diferencia de `clinicalNotes`, esta SI
+    // se puede actualizar: es una sola ficha por paciente (de CIMED, no de un medico puntual) que
+    // tanto el staff medico como Secretaria van completando y sobreescribiendo con el tiempo, no
+    // un registro por consulta.
+    match /patientBackground/{backgroundId} {
+      allow create, read, update: if isSignedIn();
+      allow delete: if false;
+    }
+
+    // Fotos de estudios (analisis, radiografias, etc.) adjuntas a la historia clinica general, ya
+    // comprimidas en el navegador antes de guardarse (ver `patientStudies.ts`). Igual que
+    // `clinicalNotes`: cualquiera del staff logueado puede crear y leer TODO el historial, y no se
+    // edita ni se borra una vez cargada.
+    match /patientStudies/{studyId} {
+      allow create, read: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Configuracion general del sitio (numero de WhatsApp, etc). Lectura publica porque la
+    // necesita la landing y la pagina de pedir turno; solo el admin la edita.
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Por defecto, todo lo demas (pacientes, etc, cuando se sume mas adelante)
+    // queda cerrado hasta que se agreguen reglas especificas.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

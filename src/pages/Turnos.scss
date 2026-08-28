@@ -1,0 +1,147 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.turnos__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  select,
+  input {
+    font-family: $font-body;
+    font-size: 0.88rem;
+    padding: 9px 12px;
+    border-radius: $radius-sm;
+    border: 1px solid $color-border;
+    background: $color-surface;
+  }
+}
+
+.turnos__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.turnos__item {
+  @include card;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include from-tablet {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.turnos__item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 180px;
+
+  strong {
+    font-size: 0.95rem;
+    color: $color-text;
+    text-transform: capitalize;
+  }
+
+  span {
+    font-size: 0.82rem;
+    color: $color-text-muted;
+  }
+}
+
+.turnos__item-patient {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+  color: $color-text-muted;
+  flex: 1;
+}
+
+.turnos__senia {
+  color: #1e6b3c !important;
+  font-weight: 600;
+}
+
+.turnos__overbooking {
+  align-self: flex-start;
+  font-family: $font-heading;
+  font-weight: 700;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 4px;
+  color: #a15c00;
+  background: rgba(#a15c00, 0.12);
+  border: 1px solid rgba(#a15c00, 0.3);
+}
+
+.turnos__item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.82rem;
+  }
+}
+
+.turnos__cancel-btn {
+  font-family: $font-body;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #b3261e;
+  background: rgba(#b3261e, 0.08);
+  border: 1px solid rgba(#b3261e, 0.25);
+  border-radius: $radius-sm;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(#b3261e, 0.16);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.turnos__status {
+  align-self: flex-start;
+  font-family: $font-heading;
+  font-weight: 700;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 4px;
+
+  &--pendiente {
+    color: #a15c00;
+    background: rgba(#a15c00, 0.12);
+  }
+
+  &--confirmado {
+    color: #1e6b3c;
+    background: rgba(#1e6b3c, 0.12);
+  }
+
+  &--cancelado {
+    color: #b3261e;
+    background: rgba(#b3261e, 0.12);
+  }
+}

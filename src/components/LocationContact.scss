@@ -1,0 +1,19 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.location-contact {
+  @include section-padding;
+  background: $color-bg;
+  padding-inline: 20px;
+  display: grid;
+  gap: 40px;
+
+  @include from-tablet {
+    padding-inline: 32px;
+  }
+
+  @include from-laptop {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+}
