@@ -14,6 +14,7 @@ import AdminDoctors from './pages/AdminDoctors'
 import AdminDoctorEdit from './pages/AdminDoctorEdit'
 import AdminSettings from './pages/AdminSettings'
 import AdminContent from './pages/AdminContent'
+import AdminLaboratorio from './pages/AdminLaboratorio'
 import MedicoDashboard from './pages/MedicoDashboard'
 import MedicoProfileEdit from './pages/MedicoProfileEdit'
 import SecretariaDashboard from './pages/SecretariaDashboard'
@@ -70,6 +71,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute role="admin">
                 <AdminContent />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/laboratorio"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminLaboratorio />
               </ProtectedRoute>
             }
           />

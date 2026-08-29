@@ -8,3 +8,9 @@ dist-ssr
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+
+# Local Netlify folder
+.netlify
+
+# Lockfile local que genera `netlify dev` para las Edge Functions del bootstrap de Netlify
+deno.lock

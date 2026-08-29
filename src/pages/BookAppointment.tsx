@@ -5,6 +5,7 @@ import { listDoctors, type DoctorProfile } from '../firebase/doctors'
 import { createTurno, listTurnosByDoctor, type Turno } from '../firebase/turnos'
 import { buildWhatsAppLink } from '../utils/whatsapp'
 import { formatDateDisplay, getAllSlots, getAvailableSlots, nextAvailableDates } from '../utils/availability'
+import MarioChat from '../components/MarioChat'
 import './BookAppointment.scss'
 
 const STEP_LABELS = ['Médico', 'Fecha', 'Horario', 'Tus datos']
@@ -457,6 +458,7 @@ export default function BookAppointment() {
           </>
         )}
       </div>
+      <MarioChat />
     </div>
   )
 }

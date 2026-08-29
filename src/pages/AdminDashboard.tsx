@@ -23,6 +23,11 @@ const CARDS = [
     desc: 'Horarios, foto de la fachada, Instagram, teléfono y dirección — sin tocar código.',
     href: '/admin/contenido',
   },
+  {
+    title: 'Laboratorio (ayunos)',
+    desc: 'Estudios de laboratorio y horas de ayuno — la fuente de datos que usa Mario, el asistente virtual.',
+    href: '/admin/laboratorio',
+  },
 ]
 
 export default function AdminDashboard() {

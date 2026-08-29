@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
 # La app usa React Router del lado del cliente (todas las rutas viven en un solo index.html).
 # Sin esto, entrar directo a una URL como /admin o /turno, o recargar la página estando ahí,

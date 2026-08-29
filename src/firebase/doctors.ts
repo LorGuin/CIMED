@@ -20,6 +20,11 @@ export interface DoctorProfile {
   slotMinutes: number
   consultationFee: string
   seniaAmount: string
+  // Obras sociales que atiende ESTE médico en particular (puede diferir de la lista general del
+  // centro). Editable desde la Ficha médico / "Mis datos profesionales", y es el dato que usa
+  // Mario (el chatbot) para contestar "¿el Dr. X atiende tal obra social?" — ver
+  // especificacion-mario-chatbot.md.
+  obrasSociales: string[]
 }
 
 export interface NewDoctorInput {
@@ -87,6 +92,7 @@ function normalizeDoctor(id: string, data: Record<string, unknown>): DoctorProfi
     slotMinutes: (data.slotMinutes as number) ?? 30,
     consultationFee: (data.consultationFee as string) ?? '',
     seniaAmount: (data.seniaAmount as string) ?? '',
+    obrasSociales: (data.obrasSociales as string[]) ?? [],
   }
 }
 
@@ -110,6 +116,7 @@ export async function createDoctor(input: NewDoctorInput): Promise<DoctorProfile
     availability: [],
     slotMinutes: 30,
     seniaAmount: '',
+    obrasSociales: [],
   }
 
   await setDoc(doctorRef, profile)
@@ -129,6 +136,7 @@ export interface UpdateDoctorInput {
   slotMinutes: number
   consultationFee: string
   seniaAmount: string
+  obrasSociales: string[]
   photoFile?: File | null
   qrFile?: File | null
 }
@@ -147,6 +155,7 @@ export async function updateDoctor(id: string, input: UpdateDoctorInput): Promis
     slotMinutes: input.slotMinutes,
     consultationFee: input.consultationFee.trim(),
     seniaAmount: input.seniaAmount.trim(),
+    obrasSociales: input.obrasSociales,
   }
 
   if (input.photoFile) {

@@ -126,6 +126,16 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Catalogo de estudios de laboratorio y horas de ayuno (panel /admin/laboratorio). Lectura
+    // publica porque lo necesita Mario (el chatbot de la landing) sin que el paciente este
+    // logueado; solo el admin lo edita, para que el dato de ayuno quede siempre confirmado por
+    // el centro (ver especificacion-mario-chatbot.md — Mario nunca inventa un tiempo de ayuno
+    // que no este en esta coleccion).
+    match /labStudies/{studyId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Por defecto, todo lo demas (pacientes, etc, cuando se sume mas adelante)
     // queda cerrado hasta que se agreguen reglas especificas.
     match /{document=**} {

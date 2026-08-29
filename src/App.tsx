@@ -6,6 +6,7 @@ import Specialties from './components/Specialties'
 import LocationContact from './components/LocationContact'
 import Instagram from './components/Instagram'
 import Footer from './components/Footer'
+import MarioChat from './components/MarioChat'
 import './App.scss'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         </main>
         <Footer />
       </div>
+      <MarioChat />
     </div>
   )
 }

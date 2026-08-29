@@ -23,6 +23,7 @@ export default function MedicoProfileEdit() {
   const [shortSpecialty, setShortSpecialty] = useState('')
   const [matricula, setMatricula] = useState('')
   const [services, setServices] = useState('')
+  const [obrasSociales, setObrasSociales] = useState('')
   const [note, setNote] = useState('')
   const [whatsappMessage, setWhatsappMessage] = useState('')
   const [consultationFee, setConsultationFee] = useState('')
@@ -55,6 +56,7 @@ export default function MedicoProfileEdit() {
         setShortSpecialty(d.shortSpecialty)
         setMatricula(d.matricula)
         setServices(d.services.join('\n'))
+        setObrasSociales(d.obrasSociales.join('\n'))
         setNote(d.note)
         setWhatsappMessage(d.whatsappMessage)
         setConsultationFee(d.consultationFee)
@@ -82,6 +84,10 @@ export default function MedicoProfileEdit() {
         shortSpecialty,
         matricula,
         services: services
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean),
+        obrasSociales: obrasSociales
           .split('\n')
           .map((s) => s.trim())
           .filter(Boolean),
@@ -168,6 +174,16 @@ export default function MedicoProfileEdit() {
             <label className="admin-doctor-edit__full">
               Servicios (uno por línea)
               <textarea rows={3} value={services} onChange={(e) => setServices(e.target.value)} />
+            </label>
+            <label className="admin-doctor-edit__full">
+              Obras sociales que atendés (una por línea — es el dato que usa Mario, el asistente
+              virtual, para contestar consultas de pacientes)
+              <textarea
+                rows={3}
+                value={obrasSociales}
+                onChange={(e) => setObrasSociales(e.target.value)}
+                placeholder={'OSDE\nSwiss Medical\nPAMI'}
+              />
             </label>
             <label>
               Nota (opcional)
