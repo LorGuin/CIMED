@@ -39,7 +39,12 @@
 
   &__panel {
     width: min(360px, calc(100vw - 32px));
+    // Alto máximo pensado a partir del viewport clásico (vh); dvh (abajo) lo corrige después en
+    // navegadores que lo soportan, para cuando el teclado del celular achica el área visible real
+    // y vh se queda "grande" — si no, el panel calcula mal su alto y el composer (el campo para
+    // escribir) puede terminar recortado por el `overflow: hidden` de acá abajo.
     max-height: min(560px, calc(100vh - 120px));
+    max-height: min(560px, calc(100dvh - 120px));
     background: $color-surface;
     border-radius: $radius-lg;
     box-shadow: $shadow-lg;
@@ -55,6 +60,7 @@
     padding: 16px 18px;
     background: linear-gradient(135deg, $color-primary-dark, $color-primary);
     color: #fff;
+    flex-shrink: 0;
 
     strong {
       display: block;
@@ -111,6 +117,7 @@
     color: $color-text-muted;
     background: rgba($color-secondary, 0.1);
     border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
   }
 
   &__thread {
@@ -120,7 +127,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-height: 160px;
+    min-height: 0;
   }
 
   &__bubble {
@@ -161,6 +168,8 @@
     flex-direction: column;
     gap: 8px;
     padding: 0 16px 12px;
+    flex-shrink: 0;
+    overflow-y: auto;
 
     button {
       text-align: left;
@@ -196,6 +205,7 @@
     gap: 8px;
     padding: 12px 16px;
     border-top: 1px solid $color-border;
+    flex-shrink: 0;
 
     input {
       flex: 1;
@@ -203,7 +213,10 @@
       border: 1px solid $color-border;
       border-radius: $radius-sm;
       padding: 10px 12px;
-      font-size: 0.88rem;
+      // 16px (no 0.88rem/14px): en iOS Safari un input con letra más chica hace que el navegador
+      // haga zoom automático al enfocarlo, lo que corre todo el layout y puede terminar tapando
+      // el propio campo de texto.
+      font-size: 16px;
       font-family: $font-body;
 
       &:focus {
