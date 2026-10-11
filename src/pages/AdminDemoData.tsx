@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { deleteDoctor, listDoctors, type DoctorProfile } from '../firebase/doctors'
 import { DEMO_DOCTOR_IDS, resetSiteSettings, seedDemoDoctors } from '../firebase/demoData'
-import { countPatientData, seedDemoPatients, wipePatientData, type PatientCounts } from '../firebase/demoPatients'
+import { countPatientData, fillDemoAgenda, seedDemoPatients, wipePatientData, type PatientCounts } from '../firebase/demoPatients'
 import PortalShell from './PortalShell'
 import './AdminUsers.scss'
 import './AdminDemoData.scss'
@@ -86,9 +86,18 @@ export default function AdminDemoData() {
     run('patients', async () => {
       const removed = await wipePatientData()
       const r = await seedDemoPatients()
-      return `Listo: se borraron ${removed} registro(s) anteriores y se cargaron ${r.patients} pacientes de ejemplo, con ${r.turnos} turnos próximos y ${r.visits} visitas en el historial (${r.notes} con consulta cargada).`
+      const extra = await fillDemoAgenda()
+      return `Listo: se borraron ${removed} registro(s) anteriores y se cargaron ${r.patients} pacientes de ejemplo, ${r.turnos + extra} turnos en las próximas dos semanas y ${r.visits} visitas en el historial (${r.notes} con consulta cargada).`
     })
   }
+
+  const handleFillAgenda = () =>
+    run('fill', async () => {
+      const n = await fillDemoAgenda()
+      return n === 0
+        ? 'La agenda de las próximas dos semanas ya está bastante llena: no hizo falta sumar turnos.'
+        : `Listo: se sumaron ${n} turnos de ejemplo en las próximas dos semanas.`
+    })
 
   const isPermissionError = (msg: string | null) => !!msg && /permission|insufficient/i.test(msg)
 
@@ -96,7 +105,7 @@ export default function AdminDemoData() {
     <PortalShell>
       <h1>Datos de demostración</h1>
       <p className="dashboard__intro">
-        La página toma los médicos y el contenido desde la base de datos. Estos cuatro pasos dejan
+        La página toma los médicos y el contenido desde la base de datos. Estos pasos dejan
         todo con la marca <strong>Clínica Aurora</strong>: equipo ficticio con retratos ilustrados,
         datos de contacto de ejemplo y sin rastros de la versión anterior.
       </p>
@@ -204,6 +213,22 @@ export default function AdminDemoData() {
               Necesita las reglas de Firestore actualizadas (el administrador tiene permiso para
               borrar historia clínica). Si todavía no las publicaste, hacelo antes.
             </p>
+          </div>
+        </section>
+
+        <section className="demo-data__step">
+          <span className="demo-data__num">5</span>
+          <div>
+            <h3>Llenar la agenda con turnos de ejemplo</h3>
+            <p>
+              Ocupa más o menos la mitad de los horarios libres de los próximos 14 días de cada
+              médico con turnos inventados (confirmados, pendientes, algún cancelado y algún
+              sobreturno). No borra nada, así que podés volver a usarlo cuando la agenda se vaya
+              vaciando con el paso de los días.
+            </p>
+            <button className="btn-primary" onClick={handleFillAgenda} disabled={busy !== null}>
+              {busy === 'fill' ? 'Cargando turnos…' : 'Llenar agenda'}
+            </button>
           </div>
         </section>
       </div>

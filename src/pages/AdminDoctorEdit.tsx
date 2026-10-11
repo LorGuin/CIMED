@@ -229,7 +229,7 @@ export default function AdminDoctorEdit() {
               {photoFile ? 'Elegir otra' : currentPhotoUrl ? 'Cambiar foto' : 'Subir foto'}
               <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/*,.svg"
                 onChange={(e) => {
                   setPhotoFile(e.target.files?.[0] ?? null)
                   setSuccess(null)

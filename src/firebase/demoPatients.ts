@@ -3,6 +3,8 @@ import { db } from './config'
 import { DEMO_DOCTORS, type DemoDoctor } from '../data/doctors'
 import { buildPatientKey } from './patientVisits'
 import { getAllSlots } from '../utils/availability'
+import { listDoctors } from './doctors'
+import { listAllTurnos } from './turnos'
 
 // Paso 4 de "Datos de demostración": borra los turnos y la historia clínica que quedaron de la
 // versión anterior (pacientes reales) y carga un set chico de pacientes FICTICIOS para que los
@@ -175,6 +177,17 @@ function slot(doctor: DemoDoctor, date: string, index: number): string {
 
 const key = (p: DemoPatient) => buildPatientKey(p.dni, p.phone)
 
+// Las reglas de Firestore solo dejan CREAR turnos "pendiente" o "confirmado" (cancelar es una
+// modificación posterior, como hace Secretaría). Por eso los cancelados de ejemplo se crean como
+// confirmados y se cancelan en un segundo paso.
+async function cancelAfterCreate(refs: ReturnType<typeof doc>[]) {
+  for (let i = 0; i < refs.length; i += 400) {
+    const batch = writeBatch(db)
+    refs.slice(i, i + 400).forEach((ref) => batch.update(ref, { status: 'cancelado' }))
+    await batch.commit()
+  }
+}
+
 export async function seedDemoPatients(): Promise<{ turnos: number; visits: number; notes: number; patients: number }> {
   const batch = writeBatch(db)
   const now = Date.now()
@@ -212,9 +225,12 @@ export async function seedDemoPatients(): Promise<{ turnos: number; visits: numb
     { p: PATIENTS.julian, d: DOC['valeria-dominguez'], nth: 2, slotIdx: 4, motivo: 'Chequeo general', status: 'cancelado' },
   ]
 
+  const toCancel: ReturnType<typeof doc>[] = []
   for (const t of upcoming) {
     const date = nthWorkday(t.d, t.nth, 1)
-    batch.set(doc(collection(db, 'turnos')), {
+    const ref = doc(collection(db, 'turnos'))
+    if (t.status === 'cancelado') toCancel.push(ref)
+    batch.set(ref, {
       doctorId: t.d.id,
       doctorName: t.d.name,
       patientName: t.p.name,
@@ -223,7 +239,7 @@ export async function seedDemoPatients(): Promise<{ turnos: number; visits: numb
       motivo: t.motivo,
       date,
       time: slot(t.d, date, t.slotIdx),
-      status: t.status,
+      status: t.status === 'cancelado' ? 'confirmado' : t.status,
       seniaInformada: t.senia ?? false,
       isOverbooking: t.overbooking ?? false,
       createdAt: now,
@@ -305,5 +321,133 @@ export async function seedDemoPatients(): Promise<{ turnos: number; visits: numb
   }
 
   await batch.commit()
+  await cancelAfterCreate(toCancel)
   return { turnos: upcoming.length, visits: past.length, notes, patients: Object.keys(PATIENTS).length }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Llenar la agenda con turnos "fantasma"
+// ---------------------------------------------------------------------------------------------
+
+const FIRST_NAMES = [
+  'Lucía', 'Mateo', 'Valentina', 'Benjamín', 'Martina', 'Joaquín', 'Camila', 'Santiago', 'Florencia',
+  'Facundo', 'Agustina', 'Nicolás', 'Rocío', 'Gonzalo', 'Micaela', 'Federico', 'Paula', 'Ramiro',
+  'Belén', 'Ezequiel', 'Silvia', 'Héctor', 'Graciela', 'Raúl',
+]
+const LAST_NAMES = [
+  'Fernández', 'Pereyra', 'Sosa', 'Romero', 'Ortiz', 'Molina', 'Videla', 'Funes', 'Lucero', 'Ponce',
+  'Arias', 'Quiroga', 'Correa', 'Godoy', 'Montenegro', 'Navarro', 'Ojeda', 'Vera', 'Bustos', 'Sáez',
+]
+const MOTIVOS: Record<string, string[]> = {
+  default: ['Consulta', 'Control', 'Primera consulta', 'Seguimiento', 'Resultados de estudios'],
+  'Cardiología': ['Control de presión', 'Electrocardiograma', 'Chequeo preoperatorio', 'Control cardiológico', 'Palpitaciones'],
+  'Neurología': ['Dolor de cabeza', 'Control', 'Mareos', 'Primera consulta', 'Resultados de resonancia'],
+  'Diabetología': ['Control de diabetes', 'Chequeo general', 'Resultados de laboratorio', 'Control de peso', 'Certificado de aptitud física'],
+  'Análisis Clínicos': ['Extracción de sangre', 'Análisis de rutina', 'Hemograma completo', 'Perfil lipídico', 'Glucemia'],
+  'Anatomía Patológica': ['Entrega de muestra', 'Retiro de resultados', 'Consulta por biopsia', 'PAP'],
+}
+
+const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
+
+function ghostPatients(count: number) {
+  const used = new Set<string>()
+  const out: { name: string; dni: string; phone: string }[] = []
+  let i = 0
+  while (out.length < count && i < count * 10) {
+    i++
+    const name = `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`
+    if (used.has(name)) continue
+    used.add(name)
+    const n = out.length + 10
+    out.push({
+      name,
+      dni: `3${String(9000000 + n * 1373).padStart(7, '0')}`,
+      phone: `261 555-${String(1000 + n).slice(-4)}`,
+    })
+  }
+  return out
+}
+
+// Llena los horarios libres de los próximos `days` días (desde hoy) de todos los médicos activos
+// con agenda cargada. Ocupa más o menos la mitad de cada día (más los días cercanos, menos los
+// lejanos, como una agenda real), deja algunos pendientes con seña y algún cancelado o sobreturno.
+// Respeta los turnos que ya existan, así que se puede volver a correr para "rellenar".
+export async function fillDemoAgenda(days = 14): Promise<number> {
+  const [doctors, existing] = await Promise.all([listDoctors(), listAllTurnos()])
+  const taken = new Set(existing.filter((t) => t.status !== 'cancelado').map((t) => `${t.doctorId}|${t.date}|${t.time}`))
+  const pool = ghostPatients(22)
+
+  const now = new Date()
+  const nowTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+  const writes: { data: Record<string, unknown>; cancel: boolean }[] = []
+
+  for (const d of doctors.filter((x) => x.active && x.availability.length > 0)) {
+    const motivos = MOTIVOS[d.shortSpecialty] ?? MOTIVOS.default
+    for (let offset = 0; offset < days; offset++) {
+      const day = new Date()
+      day.setHours(12, 0, 0, 0)
+      day.setDate(day.getDate() + offset)
+      const date = fmt(day)
+      const slots = getAllSlots(d.availability, date, d.slotMinutes)
+      if (slots.length === 0) continue
+      // Más lleno al principio (80%) y bajando hacia el final (~35%).
+      const density = 0.8 - (offset / days) * 0.45
+      let overbookingDone = false
+      for (const time of slots) {
+        if (offset === 0 && time <= nowTime) continue
+        const k = `${d.id}|${date}|${time}`
+        if (taken.has(k) || Math.random() > density) continue
+        taken.add(k)
+        const p = pick(pool)
+        const r = Math.random()
+        const status = r < 0.06 ? 'cancelado' : r < 0.3 ? 'pendiente' : 'confirmado'
+        writes.push({ cancel: status === 'cancelado', data: {
+          doctorId: d.id,
+          doctorName: d.name,
+          patientName: p.name,
+          patientPhone: p.phone,
+          patientDni: Math.random() < 0.85 ? p.dni : '',
+          motivo: pick(motivos),
+          date,
+          time,
+          status: status === 'cancelado' ? 'confirmado' : status,
+          seniaInformada: status === 'pendiente' && Math.random() < 0.5,
+          isOverbooking: false,
+          createdAt: Date.now() - Math.floor(Math.random() * 7 * 86_400_000),
+        } })
+        // De vez en cuando, un sobreturno encima de un turno ya dado.
+        if (!overbookingDone && status === 'confirmado' && Math.random() < 0.12) {
+          overbookingDone = true
+          const q = pick(pool)
+          writes.push({ cancel: false, data: {
+            doctorId: d.id,
+            doctorName: d.name,
+            patientName: q.name,
+            patientPhone: q.phone,
+            patientDni: q.dni,
+            motivo: 'Urgencia — sobreturno autorizado',
+            date,
+            time,
+            status: 'confirmado',
+            seniaInformada: false,
+            isOverbooking: true,
+            createdAt: Date.now(),
+          } })
+        }
+      }
+    }
+  }
+
+  const toCancel: ReturnType<typeof doc>[] = []
+  for (let i = 0; i < writes.length; i += 400) {
+    const batch = writeBatch(db)
+    writes.slice(i, i + 400).forEach((w) => {
+      const ref = doc(collection(db, 'turnos'))
+      if (w.cancel) toCancel.push(ref)
+      batch.set(ref, w.data)
+    })
+    await batch.commit()
+  }
+  await cancelAfterCreate(toCancel)
+  return writes.length
 }

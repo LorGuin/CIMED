@@ -3,12 +3,21 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ACCESO LIBRE (modo demostracion de Clinica Aurora). En `true`, la base acepta lecturas y
+    // escrituras del staff SIN login — cualquiera con el link del sitio puede ver y modificar
+    // turnos, historias clinicas, medicos y contenido. Usar solo con datos ficticios. Va de la mano
+    // con `OPEN_ACCESS` en src/config/access.ts. Para volver a exigir claves: `false` aca y alla, y
+    // publicar estas reglas de nuevo en la consola de Firebase.
+    function demoOpen() {
+      return true;
+    }
+
     function isSignedIn() {
-      return request.auth != null;
+      return demoOpen() || request.auth != null;
     }
 
     function isAdmin() {
-      return isSignedIn() &&
+      return demoOpen() || isSignedIn() &&
         exists(/databases/$(database)/documents/staff/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.role == 'admin';
     }
@@ -24,7 +33,7 @@ service cloud.firestore {
     // Ficha de cada persona del staff (admin / medico / secretaria).
     // Cada uno puede leer solo la propia; el admin puede leer y escribir todas.
     match /staff/{uid} {
-      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
       allow write: if isAdmin();
     }
 

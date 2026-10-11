@@ -119,7 +119,7 @@ export default function AdminContent() {
             )}
             <label className="admin-doctor-edit__file-label">
               Cambiar foto
-              <input type="file" accept="image/*" onChange={(e) => setFacadeFile(e.target.files?.[0] ?? null)} />
+              <input type="file" accept="image/*,.svg" onChange={(e) => setFacadeFile(e.target.files?.[0] ?? null)} />
             </label>
           </div>
 

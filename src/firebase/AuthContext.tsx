@@ -7,7 +7,8 @@ import {
 } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { auth, db } from './config'
-import type { StaffProfile } from './roles'
+import { ROLE_LABEL, type StaffProfile, type StaffRole } from './roles'
+import { OPEN_ACCESS } from '../config/access'
 
 interface AuthContextValue {
   user: User | null
@@ -15,6 +16,29 @@ interface AuthContextValue {
   loading: boolean
   login: (username: string, password: string) => Promise<StaffProfile>
   logout: () => Promise<void>
+  // Solo en acceso libre (ver config/access.ts): entra a un panel sin usuario ni contraseña.
+  enterOpen: (role: StaffRole, doctor?: { id: string; name: string }) => void
+}
+
+const OPEN_KEY = 'aurora-open-access'
+
+function readOpenStaff(): StaffProfile | null {
+  if (!OPEN_ACCESS) return null
+  try {
+    const raw = sessionStorage.getItem(OPEN_KEY)
+    return raw ? (JSON.parse(raw) as StaffProfile) : null
+  } catch {
+    return null
+  }
+}
+
+function writeOpenStaff(profile: StaffProfile | null) {
+  try {
+    if (profile) sessionStorage.setItem(OPEN_KEY, JSON.stringify(profile))
+    else sessionStorage.removeItem(OPEN_KEY)
+  } catch {
+    // Sin sessionStorage (navegación privada estricta): se pierde al recargar, nada más.
+  }
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -40,12 +64,17 @@ async function fetchStaffProfile(uid: string): Promise<StaffProfile | null> {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [staff, setStaff] = useState<StaffProfile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [staff, setStaff] = useState<StaffProfile | null>(() => readOpenStaff())
+  const [loading, setLoading] = useState(!OPEN_ACCESS)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser)
+      if (OPEN_ACCESS) {
+        // En acceso libre manda la elección hecha en la pantalla de entrada, no la cuenta.
+        setLoading(false)
+        return
+      }
       if (firebaseUser) {
         const profile = await fetchStaffProfile(firebaseUser.uid)
         setStaff(profile)
@@ -80,12 +109,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const logout = async () => {
-    await signOut(auth)
+    writeOpenStaff(null)
     setStaff(null)
+    if (auth.currentUser) await signOut(auth)
+  }
+
+  const enterOpen = (role: StaffRole, doctor?: { id: string; name: string }) => {
+    if (!OPEN_ACCESS) return
+    const profile: StaffProfile = {
+      uid: `open-${role}`,
+      username: role,
+      name: role === 'medico' && doctor ? doctor.name : ROLE_LABEL[role],
+      role,
+      doctorId: role === 'medico' ? doctor?.id : undefined,
+      active: true,
+    }
+    writeOpenStaff(profile)
+    setStaff(profile)
   }
 
   return (
-    <AuthContext.Provider value={{ user, staff, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, staff, loading, login, logout, enterOpen }}>
       {children}
     </AuthContext.Provider>
   )

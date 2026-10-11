@@ -195,7 +195,7 @@ export default function AdminDoctors() {
               <span className="file-picker__button">📎 Elegir archivo</span>
               <input
                 type="file"
-                accept="image/*"
+                accept="image/*,.svg"
                 onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)}
                 required
               />

@@ -10,17 +10,18 @@ export async function resizeToDataUrl(
   maxBytes: number,
   errorLabel: string
 ): Promise<string> {
-  let bitmap: ImageBitmap
+  let bitmap: ImageBitmap | HTMLImageElement
   try {
-    bitmap = await createImageBitmap(file)
+    bitmap = await decodeImage(file)
   } catch {
     // Pasa sobre todo con fotos HEIC del iPhone, que la mayoría de los navegadores no puede leer.
     throw new Error(
-      `${errorLabel} no se pudo abrir (formato no compatible). Usá una imagen JPG o PNG — si es una foto del iPhone, exportala o mandátela como JPG.`
+      `${errorLabel} no se pudo abrir (formato no compatible). Usá una imagen JPG, PNG o SVG — si es una foto del iPhone, exportala o mandátela como JPG.`
     )
   }
 
-  let { width, height } = bitmap
+  let width = bitmap.width || 400
+  let height = bitmap.height || 500
   if (width > maxDimension || height > maxDimension) {
     if (width > height) {
       height = Math.round((height * maxDimension) / width)
@@ -45,4 +46,26 @@ export async function resizeToDataUrl(
   }
 
   return dataUrl
+}
+
+// createImageBitmap no acepta SVG en la mayoría de los navegadores: en ese caso (o si falla por
+// cualquier otro motivo) se decodifica con un <img>, que sí sabe dibujar SVG en el canvas.
+async function decodeImage(file: File): Promise<ImageBitmap | HTMLImageElement> {
+  const isSvg = file.type === 'image/svg+xml' || /\.svg$/i.test(file.name)
+  if (!isSvg) {
+    try {
+      return await createImageBitmap(file)
+    } catch {
+      // sigue con <img>
+    }
+  }
+  const url = URL.createObjectURL(file)
+  try {
+    const img = new Image()
+    img.src = url
+    await img.decode()
+    return img
+  } finally {
+    URL.revokeObjectURL(url)
+  }
 }

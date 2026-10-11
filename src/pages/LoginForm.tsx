@@ -1,8 +1,10 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../firebase/AuthContext'
 import { ROLE_DASHBOARD_PATH, type StaffRole } from '../firebase/roles'
 import BrandLogo from '../components/BrandLogo'
+import { OPEN_ACCESS } from '../config/access'
+import { listDoctors, type DoctorProfile } from '../firebase/doctors'
 import './LoginForm.scss'
 
 interface LoginFormProps {
@@ -11,7 +13,76 @@ interface LoginFormProps {
   subtitle: string
 }
 
-export default function LoginForm({ role, title, subtitle }: LoginFormProps) {
+export default function LoginForm(props: LoginFormProps) {
+  return OPEN_ACCESS ? <OpenEntry {...props} /> : <PasswordLogin {...props} />
+}
+
+// Acceso libre (config/access.ts): sin usuario ni contraseña.
+function OpenEntry({ role, title, subtitle }: LoginFormProps) {
+  const { enterOpen } = useAuth()
+  const navigate = useNavigate()
+  const [doctors, setDoctors] = useState<DoctorProfile[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (role !== 'medico') return
+    listDoctors()
+      .then((list) => setDoctors(list.filter((d) => d.active)))
+      .catch(() => setError('No se pudo cargar la lista de médicos.'))
+  }, [role])
+
+  const go = (doctor?: DoctorProfile) => {
+    enterOpen(role, doctor ? { id: doctor.id, name: doctor.name } : undefined)
+    navigate(ROLE_DASHBOARD_PATH[role], { replace: true })
+  }
+
+  return (
+    <div className="login-page">
+      <div className="login-card">
+        <Link to="/" className="login-card__brand">
+          <BrandLogo size="lg" />
+        </Link>
+
+        <h1>{title}</h1>
+        <p className="login-card__subtitle">{subtitle}</p>
+        <p className="login-card__open-note">Modo demostración: acceso libre, sin contraseña.</p>
+
+        {role !== 'medico' ? (
+          <button type="button" className="btn-primary login-card__submit" onClick={() => go()}>
+            Entrar al panel
+          </button>
+        ) : error ? (
+          <p className="login-card__error">{error}</p>
+        ) : !doctors ? (
+          <p className="login-card__subtitle">Cargando médicos…</p>
+        ) : doctors.length === 0 ? (
+          <p className="login-card__subtitle">
+            Todavía no hay médicos cargados. Cargalos desde el panel de Administrador.
+          </p>
+        ) : (
+          <div className="login-card__doctors">
+            <p className="login-card__pick">¿Con qué médico querés entrar?</p>
+            {doctors.map((d) => (
+              <button key={d.id} type="button" className="login-card__doctor" onClick={() => go(d)}>
+                {d.photoUrl && <img src={d.photoUrl} alt="" />}
+                <span>
+                  <strong>{d.name}</strong>
+                  <small>{d.shortSpecialty || d.specialty}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        <Link to="/" className="login-card__back">
+          ‹ Volver al sitio
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+function PasswordLogin({ role, title, subtitle }: LoginFormProps) {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
