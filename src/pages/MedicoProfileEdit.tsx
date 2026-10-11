@@ -218,7 +218,7 @@ export default function MedicoProfileEdit() {
           </p>
           <label>
             Alias
-            <input value={alias} onChange={(e) => setAlias(e.target.value)} placeholder="cimed.matile.mp" />
+            <input value={alias} onChange={(e) => setAlias(e.target.value)} placeholder="aurora.perez.mp" />
           </label>
           <label>
             Valor de la seña (opcional)

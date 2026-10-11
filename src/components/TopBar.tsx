@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { NAV_LINKS, ROLE_LINKS } from '../data/nav'
+import BrandLogo from './BrandLogo'
 import './TopBar.scss'
 
 export default function TopBar() {
@@ -24,19 +25,17 @@ export default function TopBar() {
 
   return (
     <header className="topbar">
-      <div className="topbar__blobs" aria-hidden="true">
-        <span className="topbar__blob topbar__blob--1" />
-        <span className="topbar__blob topbar__blob--2" />
-        <span className="topbar__blob topbar__blob--3" />
-      </div>
+      <a href="#inicio" className="topbar__brand-mobile">
+        <BrandLogo size="sm" />
+      </a>
 
-      <div className="topbar__brand-mobile">
-        <img src="/logo-cimed.png" alt="CIMED" />
-      </div>
+      <p className="topbar__note">
+        <span className="topbar__dot" aria-hidden="true" /> Turnos online las 24 hs · confirmación por WhatsApp
+      </p>
 
       <div className="topbar__actions">
         <Link className="btn-primary topbar__reserve" to="/turno">
-          <span aria-hidden="true">📅</span> Reservar Turno
+          Reservar turno
         </Link>
 
         <div className="topbar__menu">
@@ -65,7 +64,7 @@ export default function TopBar() {
                     right: 0,
                     bottom: 0,
                     left: 0,
-                    background: 'rgba(15, 10, 35, 0.55)',
+                    background: 'rgba(8, 24, 34, 0.55)',
                     zIndex: 2147483646,
                   }}
                 />
@@ -82,7 +81,7 @@ export default function TopBar() {
                     maxWidth: 320,
                     marginLeft: 'auto',
                     maxHeight: 'calc(100vh - 104px)',
-                    backgroundColor: '#241a4d',
+                    backgroundColor: '#0e2a3b',
                     opacity: 1,
                     borderRadius: 20,
                     boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',

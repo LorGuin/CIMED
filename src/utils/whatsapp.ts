@@ -2,10 +2,11 @@
 // defecto de `buildWhatsAppLink` — el real (editable desde "Contenido del sitio" en el panel de
 // administrador) vive en `firebase/settings.ts` (`SiteSettings.whatsappNumber`), igual que el
 // teléfono fijo, la dirección y los datos de Instagram, que también se mudaron para allá.
-// Para wa.me los numeros moviles argentinos llevan el "9" despues del 54: 54 9 261 4195388.
-export const CIMED_WHATSAPP_PHONE = '5492614195388'
+// Para wa.me los numeros moviles argentinos llevan el "9" despues del 54: 54 9 261 xxxxxxx.
+// Valor de relleno: el real se carga desde el panel de administrador.
+export const DEFAULT_WHATSAPP_PHONE = '5492610000000'
 
-export function buildWhatsAppLink(message: string, phone: string = CIMED_WHATSAPP_PHONE): string {
+export function buildWhatsAppLink(message: string, phone: string = DEFAULT_WHATSAPP_PHONE): string {
   const encoded = encodeURIComponent(message)
   return `https://wa.me/${phone}?text=${encoded}`
 }

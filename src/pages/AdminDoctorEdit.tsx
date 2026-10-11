@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getDoctor, updateDoctor } from '../firebase/doctors'
 import { listTurnosByDoctor, type Turno } from '../firebase/turnos'
@@ -32,6 +32,12 @@ export default function AdminDoctorEdit() {
   const [currentPhotoUrl, setCurrentPhotoUrl] = useState('')
   const [currentQrUrl, setCurrentQrUrl] = useState('')
   const [photoFile, setPhotoFile] = useState<File | null>(null)
+  // Vista previa inmediata de la foto elegida (antes solo cambiaba después de guardar, y parecía
+  // que no había pasado nada).
+  const photoPreview = useMemo(() => (photoFile ? URL.createObjectURL(photoFile) : null), [photoFile])
+  useEffect(() => () => {
+    if (photoPreview) URL.revokeObjectURL(photoPreview)
+  }, [photoPreview])
   const [qrFile, setQrFile] = useState<File | null>(null)
 
   const [saving, setSaving] = useState(false)
@@ -212,14 +218,38 @@ export default function AdminDoctorEdit() {
         <section className="admin-doctor-edit__section">
           <h3>Foto</h3>
           <div className="admin-doctor-edit__media-row">
-            {currentPhotoUrl && (
-              <img src={currentPhotoUrl} alt="Foto actual" className="admin-doctor-edit__preview" />
+            {(photoPreview || currentPhotoUrl) && (
+              <img
+                src={photoPreview ?? currentPhotoUrl}
+                alt={photoPreview ? 'Foto nueva' : 'Foto actual'}
+                className="admin-doctor-edit__preview"
+              />
             )}
             <label className="admin-doctor-edit__file-label">
-              {currentPhotoUrl ? 'Cambiar foto' : 'Subir foto'}
-              <input type="file" accept="image/*" onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)} />
+              {photoFile ? 'Elegir otra' : currentPhotoUrl ? 'Cambiar foto' : 'Subir foto'}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => {
+                  setPhotoFile(e.target.files?.[0] ?? null)
+                  setSuccess(null)
+                  // Permite volver a elegir el mismo archivo si hace falta.
+                  e.target.value = ''
+                }}
+              />
             </label>
+            {photoFile && (
+              <button type="button" className="admin-doctor-edit__file-cancel" onClick={() => setPhotoFile(null)}>
+                Descartar
+              </button>
+            )}
           </div>
+          {photoFile && (
+            <p className="admin-doctor-edit__pending">
+              Foto nueva elegida ({photoFile.name}). Tocá <strong>Guardar cambios</strong> al final de
+              la página para aplicarla.
+            </p>
+          )}
         </section>
 
         <section className="admin-doctor-edit__section">
@@ -230,7 +260,7 @@ export default function AdminDoctorEdit() {
           </p>
           <label>
             Alias
-            <input value={alias} onChange={(e) => setAlias(e.target.value)} placeholder="cimed.matile.mp" />
+            <input value={alias} onChange={(e) => setAlias(e.target.value)} placeholder="aurora.perez.mp" />
           </label>
           <label>
             Valor de la seña (opcional)

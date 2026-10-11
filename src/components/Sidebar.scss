@@ -4,13 +4,13 @@
 .sidebar {
   display: none;
   flex-direction: column;
-  gap: 32px;
-  width: 220px;
+  gap: 36px;
+  width: 236px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
   height: 100vh;
-  padding: 24px 16px;
+  padding: 28px 18px 22px;
   background: $color-surface;
   border-right: 1px solid $color-border;
 
@@ -19,52 +19,81 @@
   }
 
   &__brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     text-decoration: none;
     padding: 0 8px;
-
-    img {
-      height: 34px;
-      width: auto;
-    }
-
-    span {
-      font-family: $font-heading;
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: $color-primary-dark;
-    }
   }
 
   &__nav {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
 
   &__link {
+    position: relative;
     font-family: $font-heading;
     font-weight: 600;
-    font-size: 0.95rem;
-    color: $color-text;
+    font-size: 0.93rem;
+    color: $color-text-muted;
     text-decoration: none;
-    padding: 12px 16px;
+    padding: 11px 16px;
     border-radius: $radius-sm;
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background: rgba($color-primary, 0.06);
+      color: $color-primary-dark;
+      background: rgba($color-primary, 0.05);
     }
 
     &--active {
-      background: $color-primary;
-      color: #fff;
+      color: $color-primary-dark;
+      background: $color-accent-soft;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10px;
+        bottom: 10px;
+        width: 3px;
+        border-radius: 3px;
+        background: $color-secondary;
+      }
 
       &:hover {
-        background: $color-primary;
+        background: $color-accent-soft;
       }
     }
+  }
+
+  &__cta {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 16px;
+    border-radius: $radius-md;
+    background: $color-primary-dark;
+    background-image: radial-gradient(circle at 100% 0%, rgba($color-secondary, 0.45), transparent 60%);
+    color: #fff;
+
+    strong {
+      font-family: $font-display;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    span {
+      font-size: 0.78rem;
+      color: rgba(#fff, 0.72);
+      line-height: 1.4;
+    }
+  }
+
+  &__cta-btn {
+    margin-top: 8px;
+    padding: 11px 16px;
+    font-size: 0.85rem;
+    white-space: nowrap;
   }
 }

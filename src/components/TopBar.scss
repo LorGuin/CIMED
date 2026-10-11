@@ -2,63 +2,49 @@
 @use '../styles/mixins' as *;
 
 .topbar {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 16px 20px;
-  background: $color-surface;
+  background: rgba($color-surface, 0.88);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid $color-border;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 
   @include from-tablet {
     padding: 20px 32px;
   }
 
-  &__blobs {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
+  &__note {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: $color-text-muted;
+
+    @include from-laptop {
+      display: flex;
+    }
   }
 
-  &__blob {
-    position: absolute;
+  &__dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-
-    &--1 {
-      width: 140px;
-      height: 140px;
-      background: radial-gradient(circle, rgba($color-primary-light, 0.25), transparent 70%);
-      top: -60px;
-      left: 30%;
-    }
-    &--2 {
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(circle, rgba($color-secondary, 0.3), transparent 70%);
-      top: -20px;
-      left: 42%;
-    }
-    &--3 {
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(circle, rgba($color-primary, 0.2), transparent 70%);
-      top: 10px;
-      left: 55%;
-    }
+    background: $color-whatsapp;
+    box-shadow: 0 0 0 4px rgba($color-whatsapp, 0.18);
   }
 
   &__brand-mobile {
     position: relative;
     z-index: 1;
     display: flex;
-
-    img {
-      height: 40px;
-      width: auto;
-    }
+    text-decoration: none;
 
     @include from-laptop {
       display: none;
@@ -102,7 +88,7 @@
     gap: 5px;
     width: 44px;
     height: 44px;
-    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    background: $color-primary-dark;
     border: none;
     border-radius: $radius-sm;
     box-shadow: $shadow-sm;

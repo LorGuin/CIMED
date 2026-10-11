@@ -24,6 +24,11 @@ const CARDS = [
     href: '/admin/contenido',
   },
   {
+    title: 'Datos de demostración',
+    desc: 'Cargar el equipo ficticio de Clínica Aurora y limpiar los datos de la versión anterior.',
+    href: '/admin/demo',
+  },
+  {
     title: 'Laboratorio (ayunos)',
     desc: 'Estudios de laboratorio y horas de ayuno — la fuente de datos que usa Mario, el asistente virtual.',
     href: '/admin/laboratorio',
@@ -35,7 +40,8 @@ export default function AdminDashboard() {
     <PortalShell>
       <h1>Panel de Administrador</h1>
       <p className="dashboard__intro">
-        Esta es la base del panel. Cada una de estas secciones se conecta en los próximos pasos.
+        Desde acá se administra todo el sitio de Clínica Aurora: médicos, accesos del equipo,
+        contenido de la página y la información que usa Mario, el asistente virtual.
       </p>
 
       <div className="dashboard__grid">

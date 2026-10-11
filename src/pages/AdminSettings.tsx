@@ -56,12 +56,12 @@ export default function AdminSettings() {
             <input
               value={whatsappNumber}
               onChange={(e) => setWhatsappNumber(e.target.value)}
-              placeholder="5492614195388"
+              placeholder="5492610000000"
               required
             />
           </label>
           <p className="admin-users__hint">
-            Ejemplo: para un celular de Mendoza 261 419-5388, se escribe 5492614195388 (54 = país,
+            Ejemplo: para un celular de Mendoza 261 555-0100, se escribe 5492615550100 (54 = país,
             9 = celular, 261 = área, el resto el número).
           </p>
 

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../firebase/AuthContext'
 import { ROLE_LABEL } from '../firebase/roles'
+import BrandLogo from '../components/BrandLogo'
 import './PortalShell.scss'
 
 export default function PortalShell({ children }: { children: ReactNode }) {
@@ -16,7 +17,7 @@ export default function PortalShell({ children }: { children: ReactNode }) {
   return (
     <div className="portal">
       <header className="portal__header">
-        <img src="/logo-cimed.png" alt="CIMED" className="portal__logo" />
+        <BrandLogo className="portal__logo" />
         <div className="portal__who">
           {staff && (
             <>

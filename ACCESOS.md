@@ -22,7 +22,7 @@ En la misma pantalla ves la lista de todos los usuarios ya creados.
 - Cada persona entra con **usuario + contraseña** (no email), desde `/login/administrador`,
   `/login/medicos` o `/login/secretarias`.
 - Firebase Authentication solo entiende email + contraseña. Por eso a cada usuario se le arma
-  automáticamente un email interno invisible (`<usuario>@cimed.local`) que nunca ve nadie.
+  automáticamente un email interno invisible (`<usuario>@clinica-aurora.local`; los usuarios creados antes del cambio de marca conservan su email anterior y siguen entrando igual) que nunca ve nadie.
 - Crear un usuario nuevo desde el navegador normalmente te desconecta a vos (el admin) y te deja
   logueado como el usuario nuevo. Para evitar eso, la creación usa una instancia "descartable" de
   Firebase que se cierra apenas termina — tu sesión de administrador no se toca.
@@ -62,44 +62,30 @@ No hace falta activar Firebase Storage ni tocar el archivo `storage.rules` — l
 médicos se guardan comprimidas directo en Firestore, así todo el proyecto queda en el plan gratuito
 Spark, sin necesidad de cargar una tarjeta.
 
-### Los 5 profesionales que ya ten��amos armados en el código (para volver a cargarlos)
+### Equipo de demostración (Clínica Aurora)
 
-Para cada uno: Nombre, Especialidad completa, Especialidad corta, Servicios (uno por línea),
-Nota, y la foto (buscala en la carpeta `public/doctors/` del proyecto). **Matrícula: no la tengo
-cargada en ningún lado, tenés que completarla vos** con el número real de cada uno.
+Para no arrancar con la página vacía, el Panel de Administrador tiene la tarjeta
+**"Datos de demostración"** (`/admin/demo`), con tres pasos:
 
-1. **Dra. Marisa Olivares**
-   - Especialidad completa: `Anatomía Patológica y Citología`
-   - Especialidad corta: `Anatomía Patológica`
-   - Servicios: Biopsias / Papanicolaou / Citología de líquidos / Estudios intraoperatorios / Control de punciones / Piezas quirúrgicas
-   - Nota: `Recepción de muestras: Lunes a viernes de 8 a 18 hs`
-   - Foto: `public/doctors/marisa-olivares.jpg`
+1. **Cargar el equipo de demostración**: crea 5 médicos **ficticios** con retratos ilustrados
+   (`public/doctors/*.svg`), horarios y obras sociales de ejemplo. Se puede repetir sin duplicar.
+2. **Restablecer el contenido del sitio**: deja dirección, teléfonos, horarios, fachada y redes con
+   los valores de ejemplo de Clínica Aurora.
+3. **Borrar los médicos anteriores**: elimina cualquier médico que no sea del equipo de demostración.
 
-2. **Dr. Carlos Sánchez Herrera**
-   - Especialidad completa / corta: `Neurología`
-   - Servicios: Consulta neurológica / Diagnóstico y seguimiento de trastornos del sistema nervioso
-   - Foto: `public/doctors/carlos-sanchez-herrera.jpg`
+| Médico (ficticio)       | Especialidad                         |
+|-------------------------|--------------------------------------|
+| Dra. Lucía Ferrero      | Anatomía Patológica y Citología      |
+| Dr. Martín Quiroga      | Neurología                           |
+| Dr. Esteban Ríos        | Cardiología (ecocardiografía)        |
+| Dra. Valeria Domínguez  | Clínica Médica y Diabetología        |
+| Dra. Paula Benítez      | Laboratorio de Análisis Clínicos     |
 
-3. **Dr. Mauricio Ahumada**
-   - Especialidad completa: `Cardiólogo — Especialista en ecocardiografía`
-   - Especialidad corta: `Cardiología`
-   - Servicios: Consulta cardiológica / Electrocardiograma / Ergometría (prueba de esfuerzo) / Ecocardiograma Doppler color / Holter 24 hs / MAPA (monitoreo de presión arterial) / Aptos físicos / Chequeo cardiológico completo / Chequeo deportivo / Evaluación de riesgo quirúrgico / Cardiopatía en la mujer
-   - Foto: `public/doctors/mauricio-ahumada.jpg`
+Los datos de contacto de ejemplo (WhatsApp `5492610000000`, teléfono `(0261) 400-0000`) son de
+relleno: cargá los reales desde **Configuración** y **Contenido del sitio**.
 
-4. **Dr. Carlos Matile**
-   - Especialidad completa: `Clínica Médica y Diabetología`
-   - Especialidad corta: `Diabetología`
-   - Servicios: Consultas personalizadas / Prevención, diagnóstico y tratamiento / Seguimiento integral de la diabetes
-   - Foto: `public/doctors/carlos-matile.jpg`
-
-5. **Dra. Vicente Alicia Nieves**
-   - Especialidad completa / corta: `Laboratorio de Análisis Clínicos` / `Análisis Clínicos`
-   - Sin servicios cargados todavía (no se confirmaron)
-   - Foto: `public/doctors/avatar-vicente-nieves.jpg` (es un avatar con las iniciales "VN", no una foto real — reemplazala cuando tengas la foto real)
-
-Después de cargar los 5, si alguno de ellos tiene que tener acceso al sistema (usuario/contraseña
-para ver su agenda), andá a "Médicos y Secretarias" y ya lo vas a poder elegir en el desplegable
-"Médico vinculado".
+Si alguno de los médicos tiene que tener acceso al sistema (usuario/contraseña para ver su agenda),
+andá a "Médicos y Secretarias" y elegilo en el desplegable "Médico vinculado".
 ## Sistema de turnero (pedir turno, seña por QR/alias, agenda)
 
 Ya está armado el flujo completo para que el paciente saque su turno desde la web:
@@ -153,7 +139,7 @@ Los turnos cancelados no se cuentan.
 
 Panel de Administrador → **"Configuración"** (`/admin/configuracion`): ahí se cambia el número de
 WhatsApp que reciben las confirmaciones de turno y que se usa en toda la página (antes estaba fijo
-en el código). Se carga con código de país y área, todo junto y sin espacios (ej. `5492614195388`).
+en el código). Se carga con código de país y área, todo junto y sin espacios (ej. `5492610000000`).
 
 ### Gestión de turnos (Secretaria) y agenda (Médico)
 
@@ -284,7 +270,7 @@ estudios van a fallar.
 
 ## Historia clínica compartida entre médicos, ficha por Secretaría y perfil propio del médico
 
-- **Los pacientes son de CIMED, no de un médico en particular.** Antes, la ficha de antecedentes,
+- **Los pacientes son de Clínica Aurora, no de un médico en particular.** Antes, la ficha de antecedentes,
   las consultas y las fotos de estudios quedaban separadas por médico. Ahora es al revés: si un
   paciente pide turno con el cardiólogo y después con el clínico, los dos ven LA MISMA ficha y el
   mismo historial de consultas — no hace falta cargar los antecedentes dos veces.

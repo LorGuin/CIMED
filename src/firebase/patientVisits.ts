@@ -73,7 +73,7 @@ export async function archivePastTurnos(): Promise<number> {
   return archived
 }
 
-// Historial de asistencia de todos los pacientes de CIMED (no de un medico en particular: los
+// Historial de asistencia de todos los pacientes de Clínica Aurora (no de un medico en particular: los
 // pacientes son del centro, y su historial tiene que verse completo sin importar con que medico
 // pidieron turno cada vez). Sin filtro (coleccion completa, igual que `listAllTurnos()`); se
 // agrupa y ordena en el navegador.

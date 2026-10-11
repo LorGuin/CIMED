@@ -15,7 +15,7 @@ if (!firebaseConfig.apiKey) {
   // Aviso en consola en vez de romper el build: asi el resto del sitio (landing publica)
   // sigue funcionando aunque todavia no se haya completado el .env con las credenciales reales.
   console.warn(
-    '[CIMED] Falta configurar Firebase: copia .env.example a .env y completa las credenciales del proyecto.'
+    '[Clínica Aurora] Falta configurar Firebase: copia .env.example a .env y completa las credenciales del proyecto.'
   )
 }
 

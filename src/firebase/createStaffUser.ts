@@ -15,7 +15,7 @@ export interface NewStaffInput {
 // Email interno inventado a partir del usuario, no hace falta que exista de verdad:
 // solo lo usa Firebase Authentication por dentro. El usuario nunca lo ve.
 function internalEmailFor(username: string) {
-  return `${username}@cimed.local`
+  return `${username}@clinica-aurora.local`
 }
 
 // Crear un usuario nuevo con el SDK de cliente normalmente te desloguea a vos (el admin) y te
@@ -73,7 +73,7 @@ export async function changeStaffPassword(staff: StaffProfile, newPassword: stri
     throw new Error('La contraseña tiene que tener al menos 8 caracteres.')
   }
 
-  const email = `${staff.username}-${Date.now()}@cimed.local`
+  const email = `${staff.username}-${Date.now()}@clinica-aurora.local`
   const secondaryApp = initializeApp(firebaseApp.options, `staff-password-${Date.now()}`)
   const secondaryAuth = getAuth(secondaryApp)
 

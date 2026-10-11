@@ -45,10 +45,10 @@ export default function MedicoDashboard() {
       .finally(() => setLoadingTurnos(false))
   }
 
-  // Ficha rápida por paciente: se trae UNA sola vez el historial completo de CIMED (todos los
+  // Ficha rápida por paciente: se trae UNA sola vez el historial completo de Clínica Aurora (todos los
   // médicos, no solo este), así cada turno de la agenda ya tiene su historial a mano (filtrado por
   // paciente en el navegador) sin que el médico tenga que buscar nada ni se dispare un pedido a
-  // Firestore por turno. Los pacientes son de CIMED, no de un médico en particular — si este mismo
+  // Firestore por turno. Los pacientes son de Clínica Aurora, no de un médico en particular — si este mismo
   // paciente ya fue atendido por otro colega, ese historial aparece igual acá.
   const loadRecords = () => {
     listAllPatientVisits().then(setVisits)

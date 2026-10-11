@@ -191,7 +191,7 @@ export default function AdminUsers() {
             <input
               value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
-              placeholder="ej: cmatile"
+              placeholder="ej: aperez"
               required
             />
           </label>

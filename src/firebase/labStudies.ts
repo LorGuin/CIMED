@@ -4,7 +4,7 @@ import { db } from './config'
 // Catálogo de estudios de laboratorio y sus horas de ayuno — lo usa el panel de administración
 // (/admin/laboratorio) y el chatbot Mario. Es la ÚNICA fuente de verdad para tiempos de ayuno:
 // Mario nunca debe inventar un número que no esté acá (ver especificacion-mario-chatbot.md, en el
-// proyecto de Claude). Tiene que cargarlo alguien del laboratorio (Dra. Vicente Alicia Nieves) o
+// proyecto de Claude). Tiene que cargarlo alguien del laboratorio o
 // administración — no es un dato que se pueda adivinar, un ayuno mal indicado puede invalidar un
 // análisis o, en pacientes con ciertas condiciones, ser directamente un riesgo.
 export interface LabStudy {

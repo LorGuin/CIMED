@@ -6,6 +6,7 @@ import { createTurno, listTurnosByDoctor, type Turno } from '../firebase/turnos'
 import { buildWhatsAppLink } from '../utils/whatsapp'
 import { formatDateDisplay, getAllSlots, getAvailableSlots, nextAvailableDates } from '../utils/availability'
 import MarioChat from '../components/MarioChat'
+import BrandLogo from '../components/BrandLogo'
 import './BookAppointment.scss'
 
 const STEP_LABELS = ['Médico', 'Fecha', 'Horario', 'Tus datos']
@@ -159,7 +160,7 @@ export default function BookAppointment() {
 
   if (confirmedTurno && selectedDoctor) {
     const confirmMessage =
-      `Hola CIMED! Quiero confirmar mi turno:\n` +
+      `Hola Clínica Aurora! Quiero confirmar mi turno:\n` +
       `Médico: ${selectedDoctor.name}\n` +
       `Fecha: ${formatDateDisplay(confirmedTurno.date)}\n` +
       `Hora: ${confirmedTurno.time}\n` +
@@ -202,7 +203,7 @@ export default function BookAppointment() {
     <div className="book">
       <div className="book__header">
         <Link className="book__logo-link" to="/">
-          <img src="/logo-cimed.png" alt="CIMED" className="book__logo" />
+          <BrandLogo className="book__logo" />
         </Link>
         <h1>Pedir turno</h1>
       </div>
@@ -271,7 +272,7 @@ export default function BookAppointment() {
                 <a
                   className="btn-primary"
                   href={buildWhatsAppLink(
-                    selectedDoctor.whatsappMessage || `Hola CIMED! Quiero pedir un turno con ${selectedDoctor.name}.`,
+                    selectedDoctor.whatsappMessage || `Hola Clínica Aurora! Quiero pedir un turno con ${selectedDoctor.name}.`,
                     whatsappNumber
                   )}
                   target="_blank"
@@ -444,7 +445,7 @@ export default function BookAppointment() {
 
               <p className="book__privacy-note">
                 🔒 Estos datos (nombre, teléfono, y DNI o motivo si los cargaste) los usamos solo
-                para coordinar tu turno y armar tu ficha en CIMED, conforme a la Ley 25.326 de
+                para coordinar tu turno y armar tu ficha en Clínica Aurora, conforme a la Ley 25.326 de
                 Protección de Datos Personales. Los ve únicamente el personal del centro. Podés
                 pedirnos que los corrijamos o eliminemos escribiéndonos por WhatsApp.
               </p>

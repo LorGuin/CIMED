@@ -53,7 +53,7 @@ export default function SecretariaDashboard() {
 
   // Ficha de cada paciente (datos personales/cobertura + antecedentes) — Secretaría la puede
   // completar antes de la consulta para ahorrarle tiempo al médico. Es la misma ficha que ve el
-  // médico (los pacientes son de CIMED, no de un médico en particular).
+  // médico (los pacientes son de Clínica Aurora, no de un médico en particular).
   const loadBackgrounds = () => {
     listAllPatientBackgrounds().then(setBackgrounds)
   }
@@ -108,7 +108,7 @@ export default function SecretariaDashboard() {
     try {
       await updateTurnoStatus(t.id, 'cancelado')
       await load()
-      const msg = `Hola ${t.patientName}, te escribimos de CIMED: tu turno con ${t.doctorName} para el ${formatDateDisplay(t.date)} a las ${t.time} hs fue cancelado. Cualquier consulta, escribinos por acá.`
+      const msg = `Hola ${t.patientName}, te escribimos de Clínica Aurora: tu turno con ${t.doctorName} para el ${formatDateDisplay(t.date)} a las ${t.time} hs fue cancelado. Cualquier consulta, escribinos por acá.`
       window.open(buildWhatsAppLink(msg, normalizeArgPhone(t.patientPhone)), '_blank', 'noreferrer')
     } finally {
       setUpdatingId(null)

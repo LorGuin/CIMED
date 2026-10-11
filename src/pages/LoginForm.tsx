@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../firebase/AuthContext'
 import { ROLE_DASHBOARD_PATH, type StaffRole } from '../firebase/roles'
+import BrandLogo from '../components/BrandLogo'
 import './LoginForm.scss'
 
 interface LoginFormProps {
@@ -40,7 +41,7 @@ export default function LoginForm({ role, title, subtitle }: LoginFormProps) {
     <div className="login-page">
       <div className="login-card">
         <Link to="/" className="login-card__brand">
-          <img src="/logo-cimed.png" alt="CIMED" />
+          <BrandLogo size="lg" />
         </Link>
 
         <h1>{title}</h1>

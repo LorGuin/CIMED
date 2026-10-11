@@ -73,7 +73,7 @@ export default function AdminDoctors() {
         shortSpecialty,
         matricula,
         note,
-        whatsappMessage: whatsappMessage || `Hola CIMED! Quiero pedir un turno con ${name}.`,
+        whatsappMessage: whatsappMessage || `Hola Clínica Aurora! Quiero pedir un turno con ${name}.`,
         consultationFee,
         services: services
           .split('\n')
@@ -117,7 +117,7 @@ export default function AdminDoctors() {
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Dr. Carlos Matile"
+              placeholder="Dra. Ana Pérez"
               required
             />
           </label>
@@ -185,7 +185,7 @@ export default function AdminDoctors() {
             <input
               value={whatsappMessage}
               onChange={(e) => setWhatsappMessage(e.target.value)}
-              placeholder={`Hola CIMED! Quiero pedir un turno con ${name || '(nombre)'}.`}
+              placeholder={`Hola Clínica Aurora! Quiero pedir un turno con ${name || '(nombre)'}.`}
             />
           </label>
 

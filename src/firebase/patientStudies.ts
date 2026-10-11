@@ -47,7 +47,7 @@ function compressStudyPhoto(file: File): Promise<string> {
 
 // Comprime la foto en el momento (queda liviana automaticamente, sin que el medico tenga que hacer
 // nada extra) y la guarda como un registro permanente mas de la historia clinica - no se edita ni
-// se borra una vez cargada. Es parte de la historia clinica general del paciente (CIMED), no solo
+// se borra una vez cargada. Es parte de la historia clinica general del paciente (Clínica Aurora), no solo
 // del medico que la cargo.
 export async function addStudyPhoto(input: NewStudyPhotoInput): Promise<void> {
   const imageData = await compressStudyPhoto(input.file)
@@ -63,7 +63,7 @@ export async function addStudyPhoto(input: NewStudyPhotoInput): Promise<void> {
   })
 }
 
-// Todas las fotos de estudios cargadas en CIMED, para completar la ficha rapida de cada paciente en
+// Todas las fotos de estudios cargadas en Clínica Aurora, para completar la ficha rapida de cada paciente en
 // cualquier agenda. Sin filtro (coleccion completa); se ordena (mas reciente primero) y se filtra
 // por paciente en el navegador.
 export async function listAllStudyPhotos(): Promise<StudyPhoto[]> {

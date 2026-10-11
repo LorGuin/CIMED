@@ -3,7 +3,7 @@ import { db } from './config'
 import { resizeToDataUrl } from '../utils/imageCompression'
 
 export interface SiteSettings {
-  // Número de WhatsApp del centro en formato internacional para wa.me (ej: "5492614195388"),
+  // Número de WhatsApp del centro en formato internacional para wa.me (ej: "5492610000000"),
   // usado para la confirmación de turnos y los botones de "Pedir turno" / contacto de la landing.
   whatsappNumber: string
   // Teléfono fijo que se muestra en "Contacto".
@@ -27,15 +27,18 @@ export interface SiteSettings {
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  whatsappNumber: '5492614195388',
-  phoneFijo: '4252220',
-  address: 'Jorge A. Calle 326, Ciudad de Mendoza',
+  // Valores de ejemplo de Clínica Aurora (proyecto de demostración): el número de WhatsApp y el
+  // teléfono son de relleno — se reemplazan por los reales desde el panel de administrador.
+  whatsappNumber: '5492610000000',
+  phoneFijo: '(0261) 400-0000',
+  address: 'Av. San Martín 1200, Ciudad de Mendoza',
   consultasHours: 'Lunes a viernes · 8:00 a 19:30 hs',
   laboratorioHours: 'Lunes a sábado · 8:00 a 12:00 hs',
-  facadePhotoUrl: '/cimed-fachada.jpg',
-  instagramUrl: 'https://www.instagram.com/cimedmza/',
-  instagramHandle: '@cimedmza',
-  instagramFollowers: '+2.890 seguidores',
+  facadePhotoUrl: '/fachada-aurora.svg',
+  // Sin link de Instagram la sección "Seguinos" y el ícono del pie no se muestran.
+  instagramUrl: '',
+  instagramHandle: '@clinicaaurora',
+  instagramFollowers: '',
   facebookUrl: '',
   linkedinUrl: '',
 }

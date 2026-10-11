@@ -42,7 +42,7 @@ export interface NewClinicalNoteInput {
 
 // Un registro nuevo por cada consulta atendida - la historia clinica propiamente dicha. No se
 // edita ni se borra una vez guardado (para corregir algo se carga una consulta nueva), asi queda
-// una linea de tiempo real. Los pacientes son de CIMED, no de un medico en particular: cualquier
+// una linea de tiempo real. Los pacientes son de Clínica Aurora, no de un medico en particular: cualquier
 // medico que despues atienda a este paciente ve TODAS sus consultas anteriores (con quien fueron,
 // gracias a `doctorName`), no solo las propias.
 export async function addClinicalNote(input: NewClinicalNoteInput): Promise<void> {
@@ -53,7 +53,7 @@ export async function addClinicalNote(input: NewClinicalNoteInput): Promise<void
   })
 }
 
-// Todas las consultas cargadas en CIMED, para armar la ficha rapida de cada paciente en cualquier
+// Todas las consultas cargadas en Clínica Aurora, para armar la ficha rapida de cada paciente en cualquier
 // agenda. Sin filtro (coleccion completa, igual que `listAllTurnos()`); se ordena (mas reciente
 // primero) y se filtra por paciente en el navegador.
 export async function listAllClinicalNotes(): Promise<ClinicalNote[]> {

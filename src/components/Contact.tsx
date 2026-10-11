@@ -13,7 +13,7 @@ export default function Contact() {
     e.preventDefault()
     // TODO: por ahora el formulario arma un mensaje de WhatsApp con los datos cargados.
     // Cuando conectemos Firebase, esto puede guardar la consulta en la base y/o enviar un email.
-    const text = `Hola CIMED! Soy ${name || '(sin nombre)'}.\nEmail: ${email || '(sin email)'}\nMensaje: ${message || '(sin mensaje)'}`
+    const text = `Hola Clínica Aurora! Soy ${name || '(sin nombre)'}.\nEmail: ${email || '(sin email)'}\nMensaje: ${message || '(sin mensaje)'}`
     window.open(buildWhatsAppLink(text, whatsappNumber), '_blank', 'noreferrer')
   }
 
@@ -56,7 +56,7 @@ export default function Contact() {
         <div>
           <strong>WhatsApp</strong>
           <a
-            href={buildWhatsAppLink('Hola CIMED! Quiero pedir un turno.', whatsappNumber)}
+            href={buildWhatsAppLink('Hola Clínica Aurora! Quiero pedir un turno.', whatsappNumber)}
             target="_blank"
             rel="noreferrer"
           >

@@ -4,7 +4,7 @@ import './Location.scss'
 export default function Location() {
   const { address } = useSettings()
 
-  const mapsQuery = encodeURIComponent(`CIMED Centro Médico, ${address}, Argentina`)
+  const mapsQuery = encodeURIComponent(`${address}, Argentina`)
   const mapsEmbedSrc = `https://www.google.com/maps?q=${mapsQuery}&output=embed`
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`
 
@@ -14,7 +14,7 @@ export default function Location() {
 
       <div className="location__map">
         <iframe
-          title="Ubicación de CIMED en Google Maps"
+          title="Ubicación de Clínica Aurora en Google Maps"
           src={mapsEmbedSrc}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

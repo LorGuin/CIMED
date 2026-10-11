@@ -83,12 +83,15 @@ service cloud.firestore {
 
     // Historial clinico de pacientes ("ficha del paciente"), armado automaticamente a partir de
     // los turnos que ya pasaron de fecha (ver `archivePastTurnos()` en el codigo). Los pacientes
-    // son de CIMED, no de un medico en particular, asi que cualquiera del staff logueado (admin,
+    // son de Clínica Aurora, no de un medico en particular, asi que cualquiera del staff logueado (admin,
     // medico o secretaria) puede crear y leer TODO el historial, no solo el propio; no se edita ni
     // se borra una vez creado (registro permanente).
+    // Excepcion: el administrador SI puede borrar, solo para la herramienta "Datos de
+    // demostracion" (/admin/demo, paso 4) que reemplaza la historia clinica por pacientes ficticios.
     match /patientVisits/{visitId} {
       allow create, read: if isSignedIn();
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if isAdmin();
     }
 
     // Consultas cargadas por el medico por paciente (historia clinica general, ver
@@ -97,17 +100,18 @@ service cloud.firestore {
     // (para corregir algo se carga una consulta nueva).
     match /clinicalNotes/{noteId} {
       allow create, read: if isSignedIn();
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if isAdmin();
     }
 
     // Ficha de antecedentes del paciente (datos filiatorios, cobertura, antecedentes, alergias,
     // medicacion habitual, ver `patientBackground.ts`) — a diferencia de `clinicalNotes`, esta SI
-    // se puede actualizar: es una sola ficha por paciente (de CIMED, no de un medico puntual) que
+    // se puede actualizar: es una sola ficha por paciente (de Clínica Aurora, no de un medico puntual) que
     // tanto el staff medico como Secretaria van completando y sobreescribiendo con el tiempo, no
     // un registro por consulta.
     match /patientBackground/{backgroundId} {
       allow create, read, update: if isSignedIn();
-      allow delete: if false;
+      allow delete: if isAdmin();
     }
 
     // Fotos de estudios (analisis, radiografias, etc.) adjuntas a la historia clinica general, ya
@@ -116,7 +120,8 @@ service cloud.firestore {
     // edita ni se borra una vez cargada.
     match /patientStudies/{studyId} {
       allow create, read: if isSignedIn();
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if isAdmin();
     }
 
     // Configuracion general del sitio (numero de WhatsApp, etc). Lectura publica porque la

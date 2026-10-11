@@ -1,4 +1,5 @@
 import { useSettings } from '../firebase/SettingsContext'
+import BrandLogo from './BrandLogo'
 import './Footer.scss'
 
 
@@ -31,16 +32,16 @@ export default function Footer() {
   // antes eran links muertos ('#'), ahora directamente no aparece el ícono hasta que haya un link real.
   const socialLinks = [
     facebookUrl && { name: 'Facebook', href: facebookUrl, icon: 'facebook' },
-    { name: 'Instagram', href: instagramUrl, icon: 'instagram' },
+    instagramUrl && { name: 'Instagram', href: instagramUrl, icon: 'instagram' },
     linkedinUrl && { name: 'LinkedIn', href: linkedinUrl, icon: 'linkedin' },
   ].filter((s): s is { name: string; href: string; icon: string } => Boolean(s))
 
   return (
     <footer className="footer">
       <div className="footer__inner">
-        <img className="footer__logo" src="/logo-cimed.png" alt="CIMED" />
+        <BrandLogo tone="light" />
 
-        <span className="footer__copy">© {new Date().getFullYear()} CIMED - Centro Integral de Medicina y Diagnóstico.</span>
+        <span className="footer__copy">© {new Date().getFullYear()} Clínica Aurora · Atención médica integral.</span>
 
         <div className="footer__social">
           {socialLinks.map((s) => (

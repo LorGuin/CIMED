@@ -10,7 +10,15 @@ export async function resizeToDataUrl(
   maxBytes: number,
   errorLabel: string
 ): Promise<string> {
-  const bitmap = await createImageBitmap(file)
+  let bitmap: ImageBitmap
+  try {
+    bitmap = await createImageBitmap(file)
+  } catch {
+    // Pasa sobre todo con fotos HEIC del iPhone, que la mayoría de los navegadores no puede leer.
+    throw new Error(
+      `${errorLabel} no se pudo abrir (formato no compatible). Usá una imagen JPG o PNG — si es una foto del iPhone, exportala o mandátela como JPG.`
+    )
+  }
 
   let { width, height } = bitmap
   if (width > maxDimension || height > maxDimension) {

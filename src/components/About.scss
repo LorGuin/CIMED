@@ -18,15 +18,16 @@
   }
 
   &__text h2 {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+    line-height: 1.12;
   }
 
   // El laboratorio de análisis clínicos lo lleva una profesional muy reconocida — se destaca con
   // una tarjeta propia (fondo + borde de acento) en vez de quedar como un párrafo más.
   &__lab-highlight {
     padding: 16px 18px;
-    background: rgba($color-secondary, 0.1);
-    border-left: 4px solid $color-secondary-dark;
+    background: $color-accent-soft;
+    border-left: 4px solid $color-secondary;
     border-radius: $radius-sm;
 
     strong {
@@ -37,8 +38,11 @@
   &__hours {
     h3 {
       margin: 0 0 12px;
-      font-size: 1rem;
-      color: $color-primary-dark;
+      font-family: $font-heading;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: $color-text-muted;
     }
   }
 
@@ -96,7 +100,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: rgba($color-secondary, 0.16);
+    background: $color-accent-soft;
     font-size: 1.25rem;
     line-height: 1;
   }
@@ -120,7 +124,7 @@
     margin: 0;
 
     li {
-      background: rgba($color-primary, 0.08);
+      background: rgba($color-primary, 0.07);
       color: $color-primary;
       font-weight: 600;
       font-size: 0.85rem;

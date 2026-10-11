@@ -129,7 +129,7 @@ export default function AdminContent() {
             <input
               value={instagramUrl}
               onChange={(e) => setInstagramUrl(e.target.value)}
-              placeholder="https://www.instagram.com/cimedmza/"
+              placeholder="https://www.instagram.com/clinicaaurora/"
               required
             />
           </label>
@@ -138,7 +138,7 @@ export default function AdminContent() {
             <input
               value={instagramHandle}
               onChange={(e) => setInstagramHandle(e.target.value)}
-              placeholder="@cimedmza"
+              placeholder="@clinicaaurora"
               required
             />
           </label>
@@ -157,7 +157,7 @@ export default function AdminContent() {
             <input
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Jorge A. Calle 326, Ciudad de Mendoza"
+              placeholder="Av. San Martín 1200, Ciudad de Mendoza"
               required
             />
           </label>
@@ -176,7 +176,7 @@ export default function AdminContent() {
             <input
               value={facebookUrl}
               onChange={(e) => setFacebookUrl(e.target.value)}
-              placeholder="https://facebook.com/cimedmza"
+              placeholder="https://facebook.com/clinicaaurora"
             />
           </label>
           <label>
@@ -184,7 +184,7 @@ export default function AdminContent() {
             <input
               value={linkedinUrl}
               onChange={(e) => setLinkedinUrl(e.target.value)}
-              placeholder="https://linkedin.com/company/cimedmza"
+              placeholder="https://linkedin.com/company/clinicaaurora"
             />
           </label>
 

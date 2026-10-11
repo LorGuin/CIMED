@@ -28,10 +28,8 @@
     flex-shrink: 0;
   }
 
-  &__logo {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
+  &__logo-link {
+    text-decoration: none;
   }
 
   &__steps {
@@ -167,10 +165,11 @@
     }
 
     img {
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       object-fit: cover;
+      object-position: 50% 35%;
     }
 
     strong {

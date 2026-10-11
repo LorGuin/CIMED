@@ -19,13 +19,14 @@
   }
 
   &__logo {
-    height: 40px;
-    width: auto;
+    flex-shrink: 0;
   }
 
   &__who {
     display: flex;
     flex-direction: column;
+    padding-left: 16px;
+    border-left: 1px solid $color-border;
     margin-right: auto;
 
     strong {

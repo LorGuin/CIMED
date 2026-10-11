@@ -6,7 +6,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, $color-primary-dark 0%, $color-primary 55%, $color-secondary-dark 130%);
+  background:
+    radial-gradient(circle at 50% 115%, rgba($color-secondary, 0.55), transparent 55%),
+    linear-gradient(170deg, $color-primary-dark 0%, $color-primary 100%);
   padding: 24px;
 }
 
@@ -20,9 +22,9 @@
   align-items: center;
   text-align: center;
 
-  &__brand img {
-    height: 64px;
-    margin-bottom: 20px;
+  &__brand {
+    text-decoration: none;
+    margin-bottom: 24px;
   }
 
   h1 {

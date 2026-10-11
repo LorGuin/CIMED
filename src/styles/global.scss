@@ -1,7 +1,7 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 * {
   box-sizing: border-box;
@@ -27,6 +27,23 @@ h1, h2, h3, h4 {
   margin: 0 0 16px;
 }
 
+// Los títulos grandes de la landing van en serif (Fraunces) — le da a Clínica Aurora un tono
+// cálido y editorial. Los paneles internos usan `.portal`, que vuelve a la sans para ser más compactos.
+h1, h2 {
+  font-family: $font-display;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+::selection {
+  background: rgba($color-secondary, 0.3);
+}
+
+:focus-visible {
+  outline: 3px solid rgba($color-primary-light, 0.55);
+  outline-offset: 2px;
+}
+
 p {
   margin: 0 0 16px;
   color: $color-text-muted;
@@ -49,7 +66,7 @@ a {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: $color-secondary-dark;
-  background: rgba($color-secondary, 0.12);
+  background: $color-accent-soft;
   padding: 6px 14px;
   border-radius: 999px;
   margin-bottom: 14px;
@@ -57,9 +74,24 @@ a {
 
 .btn-primary {
   @include btn-base;
-  background: linear-gradient(135deg, $color-primary, $color-primary-light);
+  background: $color-primary;
   color: #fff;
-  box-shadow: $shadow-md;
+  box-shadow: 0 8px 20px rgba($color-primary, 0.28);
+
+  &:hover {
+    background: #0f475a;
+  }
+}
+
+.btn-accent {
+  @include btn-base;
+  background: $color-secondary;
+  color: $color-primary-dark;
+  box-shadow: 0 8px 20px rgba($color-secondary, 0.35);
+
+  &:hover {
+    background: #f4936e;
+  }
 }
 
 .btn-whatsapp {
@@ -73,7 +105,12 @@ a {
   @include btn-base;
   background: transparent;
   color: $color-primary;
-  border: 2px solid $color-primary;
+  border: 1.5px solid rgba($color-primary, 0.35);
+
+  &:hover {
+    border-color: $color-primary;
+    background: rgba($color-primary, 0.04);
+  }
 }
 
 // El botón nativo de <input type="file"> ("Seleccionar archivo") no se puede controlar del todo
@@ -101,7 +138,7 @@ a {
     font-weight: 700;
     font-size: 0.82rem;
     color: #fff;
-    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    background: $color-primary;
     border-radius: $radius-sm;
     padding: 10px 16px;
     transition: filter 0.15s ease;

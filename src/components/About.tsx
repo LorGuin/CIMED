@@ -10,18 +10,18 @@ export default function About() {
       <div className="about__inner">
         <div className="about__text">
           <span className="section-eyebrow">Quiénes somos</span>
-          <h2>CIMED | Tu salud en manos expertas, en pleno corazón de Mendoza</h2>
+          <h2>Medicina cercana, con la tranquilidad de estar en buenas manos</h2>
           <p>
-            En CIMED Centro Médico reunimos especialistas en Cardiología, Neurología, Clínica Médica
-            y Diabetología, brindándote una atención integral y de confianza en un solo lugar.
+            En Clínica Aurora reunimos especialistas en Cardiología, Neurología, Clínica Médica,
+            Diabetología y Anatomía Patológica, para que resuelvas consultas, estudios y controles
+            en un solo lugar.
           </p>
           <p className="about__lab-highlight">
-            Además, dentro de nuestra institución contamos con el{' '}
-            <strong>Laboratorio de Análisis Clínicos de la Dra. Alicia Vicente Nieves</strong>,
-            garantizando resultados de alta precisión diagnóstica para tus controles y estudios.
+            Además contamos con <strong>laboratorio de análisis clínicos propio</strong>, para que
+            tus análisis se hagan en el mismo lugar donde te atendés y lleguen directo a tu médico.
           </p>
           <div className="about__hours">
-            <h3>📍 Horarios de atención</h3>
+            <h3>Horarios de atención</h3>
             <div className="about__hours-grid">
               <div className="about__hours-card">
                 <span className="about__hours-icon" aria-hidden="true">🩺</span>
@@ -52,7 +52,7 @@ export default function About() {
           <img
             className="about__facade"
             src={facadePhotoUrl}
-            alt="Fachada de CIMED, Centro Integral de Medicina y Diagnóstico"
+            alt="Fachada de Clínica Aurora"
             loading="lazy"
           />
         </div>

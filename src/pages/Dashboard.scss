@@ -32,14 +32,11 @@
 
 .dashboard__doctor-photo {
   flex-shrink: 0;
-  // Antes era un avatar circular chico con "cover": recortaba la foto en un círculo diminuto y,
-  // como estas fotos traen el nombre del médico escrito abajo, se veía prácticamente ilegible.
-  // Se pasa a un rectángulo más grande con "contain" (misma idea que Specialties.scss) para que
-  // la foto entre completa y prolija; el degradé de fondo rellena si no calza exacto.
+  // Retrato 4:5 (mismo formato que las tarjetas de la landing), recortado con "cover".
   width: 64px;
   height: 80px;
   border-radius: $radius-sm;
-  object-fit: contain;
+  object-fit: cover;
   background: linear-gradient(135deg, $color-primary, $color-secondary-dark);
   border: 2px solid $color-surface;
   box-shadow: $shadow-sm;

@@ -13,8 +13,14 @@
   &__header {
     margin-bottom: 32px;
 
+    max-width: 620px;
+
     h2 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+      margin: 0 0 8px;
+    }
+
+    p {
       margin: 0;
     }
   }
@@ -42,10 +48,24 @@
     font-weight: 700;
     font-size: 0.9rem;
     color: $color-primary-dark;
+    box-shadow: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+
+    &:hover {
+      border-color: rgba($color-secondary, 0.6);
+      background: #fffaf6;
+    }
   }
 
   &__icon {
-    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: $color-accent-soft;
+    font-size: 1.5rem;
   }
 
   &__empty {
@@ -60,8 +80,7 @@
     gap: 20px;
 
     @include from-tablet {
-      grid-template-columns: repeat(auto-fill, minmax(170px, 200px));
-      justify-content: start;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
       gap: 20px;
     }
   }
@@ -92,15 +111,12 @@
     overflow: hidden;
     background: linear-gradient(135deg, $color-primary, $color-secondary-dark);
 
-    // object-fit: contain (no cover) a propósito: las fotos de los médicos ya vienen con su
-    // nombre y especialidad escritos abajo (son las piezas que se usan también en Instagram), así
-    // que recortarlas dejaría ese texto cortado o ilegible. Con "contain" se ve la foto completa,
-    // centrada, y el degradé de fondo de `.doctor-chip__media` rellena los costados si el
-    // recuadro no queda exactamente del mismo alto/ancho que la imagen.
+    // object-fit: cover — las imágenes de los médicos son retratos 4:5 (ilustraciones o fotos sin
+    // texto encima), así que llenan el recuadro sin que quede nada importante recortado.
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
       display: block;
       transition: transform 0.35s ease;
@@ -137,7 +153,7 @@
     font-weight: 700;
     font-size: 0.68rem;
     color: $color-secondary-dark;
-    background: rgba($color-secondary, 0.14);
+    background: $color-accent-soft;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     padding: 4px 10px;
@@ -161,8 +177,8 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: $color-whatsapp;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $color-primary;
   }
 }

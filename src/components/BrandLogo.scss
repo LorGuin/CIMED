@@ -1,0 +1,61 @@
+@use '../styles/variables' as *;
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+
+  &__mark {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  &__kicker {
+    font-family: $font-heading;
+    font-weight: 700;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $color-secondary-dark;
+    margin-bottom: 3px;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-weight: 600;
+    font-size: 1.45rem;
+    letter-spacing: -0.01em;
+    color: $color-primary-dark;
+  }
+
+  &--sm &__mark {
+    width: 32px;
+    height: 32px;
+  }
+  &--sm &__name {
+    font-size: 1.2rem;
+  }
+
+  &--lg &__mark {
+    width: 56px;
+    height: 56px;
+  }
+  &--lg &__name {
+    font-size: 1.9rem;
+  }
+
+  &--light &__name {
+    color: #fff;
+  }
+  &--light &__kicker {
+    color: $color-secondary;
+  }
+}

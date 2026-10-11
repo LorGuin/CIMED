@@ -12,7 +12,7 @@ import './AdminDoctors.scss'
 
 // Catálogo de estudios de laboratorio y horas de ayuno — es el dato que usa Mario (el chatbot) para
 // contestar "¿cuánto ayuno tengo que hacer?" SIN inventar nada. Por eso conviene que lo cargue
-// alguien del laboratorio (Dra. Vicente Alicia Nieves) o administración, con el dato confirmado.
+// alguien del laboratorio o administración, con el dato confirmado.
 export default function AdminLaboratorio() {
   const [list, setList] = useState<LabStudy[]>([])
   const [loadingList, setLoadingList] = useState(true)

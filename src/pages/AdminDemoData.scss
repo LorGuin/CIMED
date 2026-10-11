@@ -1,0 +1,83 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.demo-data {
+  display: grid;
+  gap: 16px;
+  max-width: 760px;
+
+  &__msg {
+    max-width: 760px;
+    margin-bottom: 16px !important;
+  }
+
+  &__step {
+    @include card;
+    display: flex;
+    gap: 18px;
+    padding: 22px 24px;
+
+    h3 {
+      margin: 4px 0 6px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+  }
+
+  &__num {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $color-accent-soft;
+    color: $color-secondary-dark;
+    font-weight: 800;
+  }
+
+  &__avatars {
+    display: flex;
+    margin-bottom: 16px;
+
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 30%;
+      border: 3px solid $color-surface;
+      box-shadow: $shadow-sm;
+
+      & + img {
+        margin-left: -10px;
+      }
+    }
+  }
+
+  &__status {
+    margin-left: 14px;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+  }
+
+  &__list {
+    margin: 0 0 14px;
+    padding-left: 18px;
+    font-size: 0.92rem;
+
+    span {
+      color: $color-text-muted;
+    }
+  }
+
+  &__hint {
+    margin: 12px 0 0 !important;
+    font-size: 0.82rem !important;
+  }
+}

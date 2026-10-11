@@ -5,7 +5,7 @@ export default function AdminLogin() {
     <LoginForm
       role="admin"
       title="Acceso Administrador"
-      subtitle="Panel general de CIMED"
+      subtitle="Panel general de Clínica Aurora"
     />
   )
 }

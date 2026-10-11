@@ -21,8 +21,8 @@ interface PatientGroup {
   visits: PatientVisit[]
 }
 
-// Historial general de pacientes de CIMED — ya no es "mis pacientes" de un médico puntual: el
-// paciente es de CIMED, así que si pidió turno con el cardiólogo y después con el clínico, acá
+// Historial general de pacientes de Clínica Aurora — ya no es "mis pacientes" de un médico puntual: el
+// paciente es de Clínica Aurora, así que si pidió turno con el cardiólogo y después con el clínico, acá
 // aparece con la MISMA ficha y las consultas de los dos. Se puede buscar por DNI (o nombre o
 // teléfono), y lo puede abrir tanto un médico como Secretaría. Se arma juntando las cuatro fuentes
 // (visitas archivadas, consultas, ficha y estudios) por `patientKey`, sin ningún `where` — trae
@@ -141,7 +141,7 @@ export default function PatientHistory() {
       {open && (
         <div className="patient-history__panel">
           <p className="patient-history__hint">
-            Historial general de CIMED: la ficha, las consultas y los estudios de cada paciente son
+            Historial general de Clínica Aurora: la ficha, las consultas y los estudios de cada paciente son
             los mismos sin importar con qué médico haya sido el turno. Buscá por DNI, nombre o
             teléfono.
           </p>

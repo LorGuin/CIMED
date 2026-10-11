@@ -45,7 +45,8 @@ export default function Specialties() {
     <section id="especialidades" className="specialties">
       <div className="specialties__header">
         <span className="section-eyebrow">Nuestro equipo</span>
-        <h2>Nuestras Especialidades</h2>
+        <h2>Especialidades y profesionales</h2>
+        <p>Elegí a tu médico y reservá el turno online en menos de un minuto.</p>
       </div>
 
       <div className="specialties__icons">
@@ -91,7 +92,7 @@ export default function Specialties() {
               <span className="doctor-chip__label">{doctor.shortSpecialty}</span>
               <strong className="doctor-chip__name">{doctor.name}</strong>
               <span className="doctor-chip__cta">
-                <span aria-hidden="true">💬</span> Pedir turno
+                Pedir turno <span aria-hidden="true">→</span>
               </span>
             </span>
           </Link>

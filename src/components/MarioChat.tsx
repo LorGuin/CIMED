@@ -7,7 +7,7 @@ import { buildWhatsAppLink } from '../utils/whatsapp'
 import { WEEKDAY_LABELS, type AvailabilityBlock } from '../utils/availability'
 import './MarioChat.scss'
 
-// Mario: el asistente virtual de CIMED. Ver especificacion-mario-chatbot.md (proyecto de Claude)
+// Mario: el asistente virtual de Clínica Aurora. Ver especificacion-mario-chatbot.md (proyecto de Claude)
 // para el diseño completo — acá va solo el widget de chat. Toda la lógica de IA y los guardrails
 // (nunca dar consejo médico) viven del lado del servidor, en netlify/functions/mario.ts, para que
 // la API key de Groq nunca viaje al navegador. Este componente resuelve los datos de Firestore que
@@ -25,7 +25,7 @@ const QUICK_REPLIES = [
 ]
 
 const WELCOME =
-  '¡Hola! Soy Mario, el asistente de CIMED. Contame en qué te puedo ayudar: turnos, obra ' +
+  '¡Hola! Soy Mario, el asistente de Clínica Aurora. Contame en qué te puedo ayudar: turnos, obra ' +
   'social por médico, horarios, o preparación para estudios de laboratorio.'
 
 function summarizeAvailability(blocks: AvailabilityBlock[]): string {
@@ -156,7 +156,7 @@ export default function MarioChat() {
               </div>
               <div>
                 <strong>Mario</strong>
-                <span>Asistente virtual (IA) de CIMED</span>
+                <span>Asistente virtual (IA) de Clínica Aurora</span>
               </div>
             </div>
             <button type="button" className="mario__close" onClick={() => setOpen(false)} aria-label="Cerrar chat">
@@ -193,7 +193,7 @@ export default function MarioChat() {
               </Link>
               <a
                 className="mario__quick-link"
-                href={buildWhatsAppLink('Hola CIMED! Tengo una consulta.', whatsappNumber)}
+                href={buildWhatsAppLink('Hola Clínica Aurora! Tengo una consulta.', whatsappNumber)}
                 target="_blank"
                 rel="noreferrer"
               >

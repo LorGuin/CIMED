@@ -1,6 +1,19 @@
-# CIMED — Web App
-npx netlify-cli dev
-Sitio web de CIMED (Centro Integral de Medicina y Diagnóstico).
+# Clínica Aurora — Web App
+
+Sitio web y turnero de **Clínica Aurora**, un centro médico de demostración: landing pública,
+reserva de turnos online, paneles para Administrador, Médicos y Secretarias, y el asistente
+virtual Mario.
+
+> Todos los profesionales, retratos, datos de contacto y la dirección son **ficticios**. Los
+> retratos son ilustraciones (`public/doctors/*.svg`), no fotos de personas reales.
+
+## Identidad visual
+
+- Logo: `public/logo-aurora.svg` (sol naciente con cruz médica) + nombre en texto, armado por el
+  componente `BrandLogo`. Favicon: `public/favicon.svg` / `favicon.png`.
+- Paleta (`src/styles/_variables.scss`): azul petróleo `#12546a` / `#0e2a3b` + coral aurora
+  `#f2865e`, fondo crema `#faf7f3`.
+- Tipografías: **Fraunces** (títulos) y **Plus Jakarta Sans** (texto e interfaz), desde Google Fonts.
 
 ## Stack
 
@@ -47,28 +60,29 @@ Sin este paso la landing pública funciona igual; solo los logins (`/login/admin
 
 ```
 src/
-  components/       Sidebar, TopBar, Hero, About, Specialties, Location, LocationContact,
-                     Contact, Instagram, Footer, ProtectedRoute
+  components/       BrandLogo, Sidebar, TopBar, Hero, About, Specialties, Location,
+                     LocationContact, Contact, Instagram, Footer, MarioChat, ProtectedRoute, …
   pages/            LoginForm + AdminLogin/MedicoLogin/SecretariaLogin,
                      PortalShell + AdminDashboard/MedicoDashboard/SecretariaDashboard
   firebase/         config.ts (init de Firebase), AuthContext.tsx (login por usuario/contraseña), roles.ts
-  data/             doctors.ts, specialties.ts, nav.ts
+  data/             doctors.ts (equipo de demostración), specialties.ts, nav.ts
   utils/whatsapp.ts Teléfono de WhatsApp y helper para armar los links wa.me
   styles/           variables, mixins y estilos globales (Sass)
-public/doctors/     Fotos de los médicos (completas y recortadas tipo avatar)
+public/doctors/     Retratos ilustrados (SVG) de los médicos de demostración
 firestore.rules     Reglas de seguridad de Firestore (pegar en la consola de Firebase)
 ACCESOS.md          Cómo dar de alta un usuario (Administrador/Médico/Secretaria) hoy, a mano
 ```
 
-> Nota: quedaron sin usar `Header.tsx`, `Doctors.tsx`, `DoctorCard.tsx` y `WhatsAppFloatButton.tsx`
-> (componentes de una versión anterior de la landing). No rompen nada, pero se pueden borrar cuando
-> quieras — no se hizo automático porque el sistema bloqueó el permiso de borrado.
+## Datos de demostración
 
-## Contenido pendiente de revisar con el cliente
+El sitio lee médicos y contenido desde Firestore. Para dejar la base alineada con la marca, entrá
+como Administrador → **Datos de demostración** (`/admin/demo`): carga los 5 médicos ficticios,
+restablece el contenido del sitio y borra los médicos de la versión anterior. Detalle en `ACCESOS.md`.
 
-- Confirmar que el número de WhatsApp para los links `wa.me` (`549 261 4195388`) sea el formato correcto.
-- Foto real de la Dra. Vicente Alicia Nieves (Laboratorio de Análisis Clínicos) — hoy tiene un avatar con sus iniciales.
-- URLs reales de Facebook y LinkedIn para el footer (hoy son placeholder `#`).
+## Pendiente antes de mostrarlo
+
+- Cargar el número de WhatsApp y el teléfono reales (hoy hay valores de relleno).
+- URLs de Instagram, Facebook y LinkedIn si se quieren mostrar (sin link, no aparecen).
 - Credenciales de Firebase (ver sección de arriba).
 
 ## Próximos pasos (roadmap acordado)
